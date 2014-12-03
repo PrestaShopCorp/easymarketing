@@ -54,8 +54,14 @@
         <div class="col-md-4 text-left">
 {*            {$demochart}  *}
 {*			 <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/video.png" alt="easymarketing" class="img-responsive" /></p> *}
-			<iframe class="em-video" width="320" height="180" src="//www.youtube.com/embed/4L_SY9T7vks?rel=0" frameborder="0" allowfullscreen></iframe>
-
+	    <div class="em-video">
+			<object width="308" height="176">
+			    <param name="movie" value="http://www.youtube.com/embed/4L_SY9T7vks?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3&amp;controls=0"
+			    <param name="allowFullScreen" value="true"/>
+			    <param name="allowscriptaccess" value="always"/>
+			    <embed width="308" height="176" src="http://www.youtube.com/embed/4L_SY9T7vks?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3&amp;controls=0" class="youtube-player" type="text/html" allowscriptaccess="always" allowfullscreen="true"/>
+			</object>
+	    </div>
         </div>
     </div>
     

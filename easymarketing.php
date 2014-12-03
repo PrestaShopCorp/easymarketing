@@ -40,7 +40,7 @@ class Easymarketing extends Module {
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
 			'min' => '1.6.0.0',
-			'max' => '1.6.9.9'
+			'max' => '1.6.9.10'
 		);
 		$this->bootstrap = true;
 
@@ -252,11 +252,7 @@ class Easymarketing extends Module {
 
 	public function generateShopToken()
 	{
-		$shop_token = Tools::passwdGen(16, 'ALPHANUMERIC');
-		if (Configuration::updateValue('EASYMARKETING_SHOP_TOKEN', $shop_token))
-			return true;
-
-		return false;
+		return Configuration::updateValue('EASYMARKETING_SHOP_TOKEN', Tools::passwdGen(16, 'ALPHANUMERIC'));
 	}
 
 	/*
@@ -435,30 +431,37 @@ class Easymarketing extends Module {
 	 */
 	public function downloadDemoChart($partner_id = '', $version = 'mini')
 	{
-		if ($version == 'medium')
-			return '<iframe style="background-color: transparent; border: 0px none transparent;'.
-			'padding: 0px; overflow: hidden;" seamless="seamless" scrolling="no" '.
-			'frameborder="0" allowtransparency="true" width="300px" height="167px" '.
-			'src="https://api.easymarketing.de/demo_chart?website_url='.$this->getWebsiteUrl().
-			'&partner_id='.$partner_id.'&version='.$version.'"></iframe>';
-		elseif ($version == 'medium_two')
-			return '<iframe style="background-color: transparent; border: 0px none transparent;'.
-			'padding: 0px; overflow: hidden;" seamless="seamless" scrolling="no" '.
-			'frameborder="0" allowtransparency="true" width="325px" height="175px" '.
-			'src="https://api.easymarketing.de/demo_chart?website_url='.$this->getWebsiteUrl().
-			'&partner_id='.$partner_id.'&version='.$version.'"></iframe>';
-		elseif ($version == 'large')
-			return '<iframe style="background-color: transparent; border: 0px none transparent;'.
-			'padding: 0px; overflow: hidden;" seamless="seamless" scrolling="no" '.
-			'frameborder="0" allowtransparency="true" width="300px" height="250px" '.
-			'src="https://api.easymarketing.de/demo_chart?website_url='.$this->getWebsiteUrl().
-			'&partner_id='.$partner_id.'&version='.$version.'"></iframe>';
-		else
-			return '<iframe style="background-color: transparent; border: 0px none transparent;'.
-			'padding: 0px; overflow: hidden;" seamless="seamless" scrolling="no" '.
-			'frameborder="0" allowtransparency="true" width="357px" height="167px" '.
-			'src="https://api.easymarketing.de/demo_chart?website_url='.$this->getWebsiteUrl().
-			'&partner_id='.$partner_id.'&version='.$version.'"></iframe>';
+		$this->context->smarty->assign(array(
+			'site_url' => $this->getWebsiteUrl(),
+			'partner_id' => $partner_id,
+			'version' => $version
+		));
+		
+		switch ($version)
+		{
+			case 'medium':
+				$w = 300;
+				$h = 167;
+				break;
+			case 'medium_two':
+				$w = 325;
+				$h = 175;
+				break;
+			case 'large':
+				$w = 300;
+				$h = 250;
+				break;
+			default:
+				$w = 357;
+				$h = 167;
+		}
+		
+		$this->context->smarty->assign(array(
+			'width'  => $w,
+			'height' => $h
+		));
+		
+		return $this->display(__FILE__, 'demo_chart.tpl');
 	}
 
 	/**
@@ -767,20 +770,8 @@ class Easymarketing extends Module {
 
 	protected function displayCategories()
 	{
-		$return = '
-					<table cellspacing="0" cellpadding="0" class="table">
-						<tr>
-							<th>'.$this->l('Root').'</th>
-							<th>
-								<input type="checkbox" name="checkme" class="noborder"
-								 onclick="processCheckBoxes(this.checked)" />
-							</th>
-							<th>'.$this->l('ID').'</th>
-							<th>'.$this->l('Name').'</th>
-							<th>'.$this->l('Google category name').'</th>
-						</tr>';
-
 		$categories = Category::getCategories((int)($this->context->cookie->id_lang), false, false);
+		
 		foreach ($categories as $key => $category)
 		{
 			$cat = new Category((int)$category['id_category']);
@@ -797,44 +788,35 @@ class Easymarketing extends Module {
 				$achildren[] = $child['id_category'];
 			$categories[$key]['children'] = $achildren;
 		}
+		
 		// selected categories
 		$indexedCategories = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
-		$content = '';
+		$content = array();
 		$done = false;
 
-		self::recurseCategoryForInclude($indexedCategories,
-			$categories, 1, null, null, $content, $done);
+		self::recurseCategoryForInclude($indexedCategories, $categories, 1, null, null, $content, $done);
+		
+		$this->context->smarty->assign('categories', $content);
 
-		$return .= $content;
-
-		$return .= '</table>';
-		return $return;
+		return $this->display(__FILE__, 'category_tree.tpl');
 	}
 
 	protected function displaySiteVerification()
 	{
 		$site_verification_completed = Configuration::get('EASYMARKETING_SITE_VERIFICATION_COMPLETED');
 		$site_verification_status = unserialize(Configuration::get('EASYMARKETING_SITE_VERIFICATION_STATUS'));
-
-		$return = '';
-		if ($site_verification_completed != 1)
-			$return .= '<button class="btn btn-default" type="submit"
-			name="submitDoSiteVerification"><i class="icon-download"></i> '.$this->l('Perform Google Site verification').'</button>';
-
-		if (is_array($site_verification_status))
-		{
-			foreach ($site_verification_status as $status)
-				$return .= '<div class="alert-'.$status['res'].'">'.$status['message'].'</div>';
-		}
-		return $return;
+		
+		$this->context->smarty->assign(array(
+			'display_button' => $site_verification_completed != 1,
+			'messages' => is_array($site_verification_status) ? $site_verification_status : false
+		));
+		
+		return $this->return(__FILE__, 'site_verification.tpl');
 	}
 
 	protected function displayTrackerCodes()
 	{
-		$return = '';
-		$return .= '<button class="btn btn-default" type="submit"
-			name="submitGetTrackerCodes"><i class="icon-cloud-download"></i> '.$this->l('Download trackers codes').'</button>';
-		return $return;
+		return $this->return(__FILE__, 'tracker_codes.tpl');
 	}
 
 	protected function displayAttributesMapping()
@@ -847,25 +829,14 @@ class Easymarketing extends Module {
 			$attr_result[$ag['id_attribute_group']] = array(
 				'name' => $ag['name']
 			);
-
-		$return = '<table cellspacing="0" cellpadding="0" class="table">
-						<tr>
-							<th>'.$this->l('Field name').'</th>
-							<th>'.$this->l('Attribute group').'</th>
-						</tr>';
-		foreach (self::$fields_for_attributes_mapping as $field)
-		{
-			$return .= '<tr><td>'.$field.'</td><td><select name="attributesmapping['.$field.'][id_attribute_group]">';
-			$return .= '<option value="0">--'.$this->l('Please select attribute group').'--</option>';
-			foreach ($attr_result as $id_attribute_group => $attr)
-				$return .= '<option value="'.$id_attribute_group.'"'.
-					(((isset($attrMapping[$field]['id_attribute_group']) &&
-						$attrMapping[$field]['id_attribute_group'] == $id_attribute_group))?' selected="selected"':'').
-					'>'.$attr['name'].'</option>';
-			$return .= '</select></td></tr>';
-		}
-
-		return $return.'</table>';
+			
+		$this->context->smarty->assign(array(
+			'attributes_res' => $attr_result,
+			'attributes_map' => $attrMapping,
+			'attributes' => self::$fields_for_attributes_mapping
+		));
+		
+		return $this->display(__FILE__, 'attributes.tpl');
 	}
 
 	public static function recurseCategoryForInclude($indexedCategories, $categories, $current,
@@ -921,35 +892,22 @@ class Easymarketing extends Module {
 				}
 			}
 		}
-
-		$content .= '
-		<tr class="'.($irow++ % 2 ? 'alt_row' : '').'">
-			<td>
-				<input type="radio" name="categoryRoot" class="categoryBox" id="categoryRoot_'.$current.'" value="'.$current.'"'.(($rootCategory) ? ' checked="checked"' : '').' />
-			</td>
-			<td>
-				<input type="checkbox" name="categoryBox['.$current.'][id_category]" class="categoryBox'.($id_category_default == $current ? ' id_category_default' : '').'" id="categoryBox_'.$current.'" value="'.$current.'"'.(($selected) ? ' checked="checked"' : '').' />
-			</td>
-			<td>
-				'.$current.'
-			</td>
-			<td>';
-
-		for ($i = 2; $i < $level; $i++)
-			$content .= '<img  src="../modules/easymarketing/img/lvl_'.$has_suite[$i - 2].'.gif" alt="" />';
-
-		$content .= '<img src="../modules/easymarketing/img/'.($level == 1 ? 'lv1.gif' : 'lv2_'.($todo == $doneC ? 'f' : 'b').'.gif').'"
-			alt="" /> &nbsp;
-			<label for="categoryBox_'.$current.'" class="t">'.Tools::stripslashes($currentCategoryData['name']).'</label>
-			</td>
-			<td>
-				<input type="text" name="categoryBox['.$current.'][name]" value="'.$name.'" />
-
-				<input type="hidden" name="categoryLevel['.$current.']" value="'.$level.'" />
-				<input type="hidden" name="categoryAllChildren['.$current.']" value="'.implode(';', $currentCategoryData['allchildren']).'" />
-				<input type="hidden" name="categoryChildren['.$current.']" value="'.implode(';', $currentCategoryData['children']).'" />
-			</td>
-		</tr>';
+		
+		$content[] = array(
+			'index'               => $irow,
+			'current'             => $current,
+			'rootCategory'        => $rootCategory,
+			'id_category_default' => $id_category_default,
+			'selected'            => $selected,
+			'level'               => $level,
+			'has_suite'           => $has_suite,
+			'todo'                => $todo,
+			'doneC'               => $doneC,
+			'category_name'       => Tools::stripslashes($currentCategoryData['name']),
+			'category_name_raw'   => $name,
+			'all_children'        => implode(';', $currentCategoryData['allchildren']),
+			'children'            => implode(';', $currentCategoryData['children'])
+		);
 
 		if ($level > 1)
 			$has_suite[] = ($todo == $doneC ? 0 : 1);
@@ -2373,8 +2331,7 @@ class Easymarketing extends Module {
 			$multilang = '';
 
 		$default_meta_order = Meta::getMetaByPage('order', $this->context->language->id);
-		if (strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.'order.php') === 0 ||
-			strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.$multilang.$default_meta_order['url_rewrite']) === 0)
+		if ($this->context->controller instanceof OrderController)
 		{
 			if ((int)Tools::getValue('step') == 3)
 			{
@@ -2396,10 +2353,8 @@ class Easymarketing extends Module {
 		}
 
 		$default_meta_order = Meta::getMetaByPage('order-opc', $this->context->language->id);
-		if (strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.'order-opc.php') === 0 ||
-			strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.$multilang.$default_meta_order['url_rewrite']) === 0)
+		if ($this->context->controller instanceof OrderOpcController)
 		{
-
 			if (Configuration::get('EASYMARKETING_LEAD_TRACKER_ENABLED'))
 			{
 
@@ -2418,8 +2373,7 @@ class Easymarketing extends Module {
 		}
 
 		$default_meta_order = Meta::getMetaByPage('contact', $this->context->language->id);
-		if (strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.'contact.php') === 0 ||
-			strpos($_SERVER['REQUEST_URI'], __PS_BASE_URI__.$multilang.$default_meta_order['url_rewrite']) === 0)
+		if ($this->context->controller instanceof ContactController)
 		{
 			if (Configuration::get('EASYMARKETING_LEAD_TRACKER_ENABLED'))
 			{
