@@ -811,12 +811,12 @@ class Easymarketing extends Module {
 			'messages' => is_array($site_verification_status) ? $site_verification_status : false
 		));
 		
-		return $this->return(__FILE__, 'site_verification.tpl');
+		return $this->display(__FILE__, 'site_verification.tpl');
 	}
 
 	protected function displayTrackerCodes()
 	{
-		return $this->return(__FILE__, 'tracker_codes.tpl');
+		return $this->display(__FILE__, 'tracker_codes.tpl');
 	}
 
 	protected function displayAttributesMapping()
