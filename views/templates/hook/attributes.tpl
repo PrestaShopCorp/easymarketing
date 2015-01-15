@@ -29,7 +29,7 @@
 		    <option value="0">--{l s='Please select attribute group' mod='easymarketing'}--</option>
 		    
 		    {foreach from=$attributes_res item=attr key=id_attribute_group}
-			<option value="'.$id_attribute_group.'" {if isset($attributes_map[$field]) && $attributes_map[$field].id_attribute_group == $id_attribute_group}selected="selected"{/if}>{$attr.name}</option>
+			<option value="{$id_attribute_group}" {if isset($attributes_map->{$field}) && $attributes_map->{$field}->id_attribute_group == $id_attribute_group}selected="selected"{/if}>{$attr.name}</option>
 		    {/foreach}
 		</select>
 	    </td>

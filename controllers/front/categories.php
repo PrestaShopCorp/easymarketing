@@ -43,11 +43,12 @@ class EasymarketingCategoriesModuleFrontController extends ModuleFrontController
 			{
 				$id = Tools::getValue('id');
 				$valid_category = true;
-				$selected_cats = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+				$selected_cats = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+
 				if (is_array($selected_cats))
 				{
 					foreach ($selected_cats as $selected_cat)
-						$selected_cat_ids[] = $selected_cat['id_category'];
+						$selected_cat_ids[] = $selected_cat->id_category;
 
 					if (!in_array($id, $selected_cat_ids))
 						$valid_category = false;

@@ -68,9 +68,9 @@ class Easymarketing extends Module {
 		if (!Configuration::hasKey('EASYMARKETING_SHOP_TOKEN'))
 			$return &= $this->generateShopToken();
 
-		$selected_cats = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+		$selected_cats = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 		if (!is_array($selected_cats))
-			Configuration::updateValue('EASYMARKETING_EXPORT_CATEGORIES', serialize(array()));
+			Configuration::updateValue('EASYMARKETING_EXPORT_CATEGORIES', Tools::jsonEncode(array()));
 
 		Configuration::updateValue('EASYMARKETING_LOG_ENABLED', 0);
 
@@ -96,7 +96,7 @@ class Easymarketing extends Module {
 
 	public function getExportRootCategory()
 	{
-		$selected_cats = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+		$selected_cats = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 		if (!is_array($selected_cats) || (count($selected_cats) == 0))
 			return 1;
 		else
@@ -104,9 +104,9 @@ class Easymarketing extends Module {
 			$root = 0;
 			foreach ($selected_cats as $cat)
 			{
-				if ($cat['root'])
+				if ($cat->root)
 				{
-					$root = $cat['id_category'];
+					$root = $cat->id_category;
 					break;
 				}
 			}
@@ -125,28 +125,28 @@ class Easymarketing extends Module {
 
 	public function getExportCategoriesIds()
 	{
-		$selected_cats = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+		$selected_cats = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 		if (!is_array($selected_cats) || (count($selected_cats) == 0))
 			return array();
 
 		$ids = array();
 		foreach ($selected_cats as $cat)
-			$ids[] = $cat['id_category'];
+			$ids[] = $cat->id_category;
 
 		return $ids;
 	}
 
 	public function getGoogleCategoryNames()
 	{
-		$selected_cats = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+		$selected_cats = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 		if (!is_array($selected_cats) || (count($selected_cats) == 0))
 			return array();
 
 		$names = array();
 		foreach ($selected_cats as $cat)
 		{
-			if (trim($cat['name']) != '')
-				$names[$cat['id_category']] = $cat['name'];
+			if (trim($cat->name) != '')
+				$names[$cat->id_category] = $cat->name;
 		}
 		return $names;
 	}
@@ -199,7 +199,7 @@ class Easymarketing extends Module {
 			}
 		}
 		Configuration::updateValue('EASYMARKETING_SITE_VERIFICATION_COMPLETED', $completed);
-		Configuration::updateValue('EASYMARKETING_SITE_VERIFICATION_STATUS', serialize($status));
+		Configuration::updateValue('EASYMARKETING_SITE_VERIFICATION_STATUS', Tools::jsonEncode($status));
 
 		return $completed;
 	}
@@ -511,7 +511,7 @@ class Easymarketing extends Module {
 	{
 		if (($data->html_file_name != '') && ($data->html_content != ''))
 		{
-			$path = _PS_ROOT_DIR_.'/'.$data->html_file_name;
+			$path = _PS_ROOT_DIR_.'/'.realpath($data->html_file_name);
 			if (!$write_fd = fopen($path, 'w+'))
 				return false;
 
@@ -790,7 +790,7 @@ class Easymarketing extends Module {
 		}
 		
 		// selected categories
-		$indexedCategories = unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+		$indexedCategories = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 		$content = array();
 		$done = false;
 
@@ -804,7 +804,7 @@ class Easymarketing extends Module {
 	protected function displaySiteVerification()
 	{
 		$site_verification_completed = Configuration::get('EASYMARKETING_SITE_VERIFICATION_COMPLETED');
-		$site_verification_status = unserialize(Configuration::get('EASYMARKETING_SITE_VERIFICATION_STATUS'));
+		$site_verification_status = Tools::jsonDecode(Configuration::get('EASYMARKETING_SITE_VERIFICATION_STATUS'));
 		
 		$this->context->smarty->assign(array(
 			'display_button' => $site_verification_completed != 1,
@@ -821,7 +821,7 @@ class Easymarketing extends Module {
 
 	protected function displayAttributesMapping()
 	{
-		$attrMapping = unserialize(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'));
+		$attrMapping = Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'));
 		//get group of attributes
 		$attr_result = array();
 		$attrGroups = AttributeGroup::getAttributesGroups($this->context->language->id);
@@ -883,11 +883,11 @@ class Easymarketing extends Module {
 			{
 				if (array_key_exists('id_category', $categoryData) && array_key_exists('name', $categoryData))
 				{
-					if ($current == (int)$categoryData['id_category'])
+					if ($current == (int)$categoryData->id_category)
 					{
 						$selected = true;
-						$name = $categoryData['name'];
-						$rootCategory = $categoryData['root'];
+						$name = $categoryData->name;
+						$rootCategory = $categoryData->root;
 					}
 				}
 			}
@@ -1175,7 +1175,7 @@ class Easymarketing extends Module {
 					}
 			}
 
-			if (!Configuration::updateValue('EASYMARKETING_EXPORT_CATEGORIES', serialize($selected_cat)))
+			if (!Configuration::updateValue('EASYMARKETING_EXPORT_CATEGORIES', Tools::jsonEncode($selected_cat)))
 				$this->_errors[] = $this->l('Could not update').': EASYMARKETING_EXPORT_CATEGORIES';
 
 			$attr_mapping = array();
@@ -1187,7 +1187,7 @@ class Easymarketing extends Module {
 						$attr_mapping[$field_name] = $field;
 			}
 
-			if (!Configuration::updateValue('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING', serialize($attr_mapping)))
+			if (!Configuration::updateValue('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING', Tools::jsonEncode($attr_mapping)))
 				$this->_errors[] = $this->l('Could not update').': EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING';
 
 
@@ -1757,7 +1757,7 @@ class Easymarketing extends Module {
 								$newer_than = false)
 	{
 		if (count(self::$export_categories) == 0) self::$export_categories =
-			unserialize(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
+			Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 
 		if (count(self::$google_category_names) == 0)
 			self::$google_category_names = $this->getGoogleCategoryNames();
@@ -1768,7 +1768,7 @@ class Easymarketing extends Module {
 			{
 				$selected_cat_ids = array();
 				foreach (self::$export_categories as $cat)
-					$selected_cat_ids[] = $cat['id_category'];
+					$selected_cat_ids[] = $cat->id_category;
 				$id_categories = $selected_cat_ids;
 			}
 			else
@@ -1781,7 +1781,7 @@ class Easymarketing extends Module {
 
 
 		if (count(self::$attr_mappings) == 0) self::$attr_mappings =
-			unserialize(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'));
+			Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'));
 
 		$front = true;
 		if (!in_array($context->controller->controller_type, array('front', 'modulefront')))
@@ -1851,7 +1851,7 @@ class Easymarketing extends Module {
 
 		if ($id_categories)
 			if (is_array($id_categories) && (count($id_categories) > 0))
-				$sql->where('p.`id_category_default` IN ('.implode(',', $id_categories).')');
+				$sql->where('p.`id_category_default` IN ('.implode(',', array_map('intval', $id_categories)).')');
 			else
 				$sql->where('p.`id_category_default` = '.(int)$id_categories);
 
@@ -1940,7 +1940,7 @@ class Easymarketing extends Module {
 			if ($id_categories)
 			{
 				if (is_array($id_categories) && (count($id_categories) > 0))
-					$sql->where('p.`id_category_default` IN ('.implode(',', $id_categories).')');
+					$sql->where('p.`id_category_default` IN ('.implode(',', array_map('intval', $id_categories)).')');
 				else
 					$sql->where('p.`id_category_default` = '.(int)$id_categories);
 			}
