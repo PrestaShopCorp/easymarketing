@@ -509,9 +509,9 @@ class Easymarketing extends Module {
 
 	public function putGoogleSiteVerificationDataInFile($data)
 	{
-		if (($data->html_file_name != '') && ($data->html_content != ''))
-		{
-			$path = _PS_ROOT_DIR_.'/'.realpath($data->html_file_name);
+	        if (($data->html_file_name != '') && ($data->html_content != '') && pathinfo($data->html_file_name, PATHINFO_EXTENSION) == 'html')
+	        {
+	        	$path = _PS_ROOT_DIR_.'/'.pathinfo($data->html_file_name, PATHINFO_BASENAME);
 			if (!$write_fd = fopen($path, 'w+'))
 				return false;
 
