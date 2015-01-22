@@ -23,6 +23,6 @@
 
 {if $messages}
     {foreach from=$messages item=message}
-    <div class="alert-{$message.res}">{$message.message}</div>
+    <div class="alert-{$message->res}">{$message->message}</div>
     {/foreach}
 {/if}
