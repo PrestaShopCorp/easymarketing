@@ -55,7 +55,7 @@
 {*            {$demochart}  *}
 {*			 <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/video.png" alt="easymarketing" class="img-responsive" /></p> *}
 	    <div class="em-video">
-			<object type="text/html" data="http://www.youtube.com/embed/4L_SY9T7vks?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3&amp;controls=0&amp;showinfo=0'" width="308" height="176"></object>
+			<object type="text/html" data="//www.youtube.com/embed/4L_SY9T7vks?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3&amp;controls=0&amp;showinfo=0'" width="308" height="176"></object>
 	    </div>
         </div>
     </div>
