@@ -2516,18 +2516,10 @@ class Easymarketing extends Module {
 						}
 						break;
 				}
-				$remarketing_code->code = str_replace(
-					array('ecomm_prodid: \'REPLACE_WITH_VALUE\'',
-						'ecomm_pagetype: \'REPLACE_WITH_VALUE\'',
-						'ecomm_totalvalue: \'REPLACE_WITH_VALUE\'',
-						'// INSERT_VALUES'),
-					array('ecomm_prodid: '.$ecomm_prodid.'',
-						'ecomm_pagetype: \''.$ecomm_pagetype.'\'',
-						'ecomm_totalvalue: '.$ecomm_totalvalue.'',
-						implode("\r\n", $ecomm_others)),
-					$remarketing_code->code);
-				//echo '<pre>Code: '.print_r($remarketing_code->code, true).'</pre>';
-				$return .= $remarketing_code->code;
+                		$code = '<script type="text/javascript">var google_tag_params = {'.'ecomm_prodid: '.$ecomm_prodid.', ecomm_pagetype: \''.$ecomm_pagetype.'\', ecomm_totalvalue: '.$ecomm_totalvalue.', '.
+                    			implode("\n", $ecomm_others).'}; </script>';
+
+				$return .= $code."\n".$remarketing_code->code;
 			}
 		}
 
