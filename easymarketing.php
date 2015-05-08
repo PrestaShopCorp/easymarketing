@@ -276,6 +276,7 @@ class Easymarketing extends Module {
 
 		if (($tracker = $this->parseResponse($res, true, false)) != false)
 		{
+			//echo $tracker; exit;
 			if (Configuration::updateValue('EASYMARKETING_CONVERSION_TRACKER', urlencode($tracker)))
 				return true;
 		}
@@ -622,8 +623,8 @@ class Easymarketing extends Module {
 			$defaults[CURLOPT_POST] = 1;
 			$defaults[CURLOPT_HTTPHEADER] = array(
 				'Accept: application/vnd.easymarketing.com; version='.self::$easymarketing_api_version,
-				'Content-Type: application/json',
-				'Accept: application/json'
+				/*'Content-Type: application/json',
+				'Accept: application/json'*/
 			);
 			$defaults[CURLOPT_POSTFIELDS] = http_build_query($post);
 		}
@@ -696,6 +697,7 @@ class Easymarketing extends Module {
 		$html  = '';
 		$html .= $this->displayInfo();
 		$html .= $this->postProcess();
+		$this->context->controller->errors = array_merge($this->context->controller->errors, $this->_errors);
 		$html .= $this->displayForm();
 		//$html .= $this->displayUserPerformance();
 
@@ -1781,7 +1783,7 @@ class Easymarketing extends Module {
 
 
 		if (count(self::$attr_mappings) == 0) self::$attr_mappings =
-			Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'));
+			Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING'), true);
 
 		$front = true;
 		if (!in_array($context->controller->controller_type, array('front', 'modulefront')))
@@ -1807,7 +1809,7 @@ class Easymarketing extends Module {
 		$sql = new DbQuery();
 
 		$sql->select('p.`id_product`, p.`condition`, product_shop.`id_shop`, pl.`name`, p.`is_virtual`,
-						pl.`description_short`, pl.`available_now`, pl.`available_later`,
+						pl.`description_short`, pl.`description`, pl.`available_now`, pl.`available_later`,
 						product_shop.`id_category_default`, p.`id_supplier`,
 						p.`id_manufacturer`, product_shop.`on_sale`, product_shop.`ecotax`,
 						product_shop.`additional_shipping_cost`,
@@ -1895,7 +1897,7 @@ class Easymarketing extends Module {
 			$sql = new DbQuery();
 
 			$sql->select('p.`id_product`, p.`condition`, product_shop.`id_shop`, pl.`name`, p.`is_virtual`,
-							pl.`description_short`, pl.`available_now`, pl.`available_later`,
+							pl.`description_short`, pl.`description`, pl.`available_now`, pl.`available_later`,
 							product_shop.`id_category_default`, p.`id_supplier`,
 							p.`id_manufacturer`, product_shop.`on_sale`, product_shop.`ecotax`,
 							product_shop.`additional_shipping_cost`,
@@ -2180,7 +2182,7 @@ class Easymarketing extends Module {
 			'image_url' => $this->context->link->getImageLink($product['link_rewrite'],
 					$product['id_product'].'-'.$cover['id_image'], null),
 			'shipping' => $shipping,
-			'description' => $product['description_short'],
+			'description' => $product['description'],
 			'gtin' => $product['ean13'],
 
 			//attributes are optional per product
@@ -2208,6 +2210,7 @@ class Easymarketing extends Module {
 					$product['id_product'].'-'.$product['pai_id_image'], null);
 
 			//additional fields for attributes
+
 			foreach (self::$fields_for_attributes_mapping as $field)
 			{
 				if (isset(self::$attr_mappings[$field]['id_attribute_group']) &&
@@ -2304,8 +2307,10 @@ class Easymarketing extends Module {
 		{
 			$conversion_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_CONVERSION_TRACKER')));
 
-			if (isset($conversion_tracker->code))
-				$return .= $conversion_tracker->code."\r\n";
+			if (isset($conversion_tracker->code)) {
+				$return .= preg_replace('/(google_conversion_value\s=\s.+;)/i',
+						'google_conversion_value = '.$params['total_to_pay'].';', $conversion_tracker->code)."\r\n";
+			}
 
 			if (isset($conversion_tracker->fb_code))
 				$return .= $conversion_tracker->fb_code."\r\n";
@@ -2373,10 +2378,11 @@ class Easymarketing extends Module {
 		}
 
 		$default_meta_order = Meta::getMetaByPage('contact', $this->context->language->id);
-		if ($this->context->controller instanceof ContactController)
+		if ($this->context->controller instanceof ContactController && Tools::isSubmit('submitMessage'))
 		{
 			if (Configuration::get('EASYMARKETING_LEAD_TRACKER_ENABLED'))
 			{
+
 				$lead_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_LEAD_TRACKER')));
 				if (isset($lead_tracker->code))
 				{
@@ -2518,6 +2524,8 @@ class Easymarketing extends Module {
 				}
                 		$code = '<script type="text/javascript">var google_tag_params = {'.'ecomm_prodid: '.$ecomm_prodid.', ecomm_pagetype: \''.$ecomm_pagetype.'\', ecomm_totalvalue: '.$ecomm_totalvalue.', '.
                     			implode("\n", $ecomm_others).'}; </script>';
+
+				$remarketing_code->code = preg_replace('/(var google_tag_params\s\=\s\{.+\};)/s', '', $remarketing_code->code);
 
 				$return .= $code."\n".$remarketing_code->code;
 			}
