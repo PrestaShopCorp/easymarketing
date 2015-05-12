@@ -276,7 +276,6 @@ class Easymarketing extends Module {
 
 		if (($tracker = $this->parseResponse($res, true, false)) != false)
 		{
-			//echo $tracker; exit;
 			if (Configuration::updateValue('EASYMARKETING_CONVERSION_TRACKER', urlencode($tracker)))
 				return true;
 		}
@@ -2026,8 +2025,6 @@ class Easymarketing extends Module {
 
 						ORDER BY ag.`id_attribute_group` ASC';
 				$rattr = Db::getInstance()->ExecuteS($sql);
-
-				//print_r($rattr); exit;
 
 				$newProductName = array();
 				foreach ($rattr as $attribute)
