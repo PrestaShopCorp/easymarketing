@@ -35,7 +35,7 @@ class Easymarketing extends Module {
 	{
 		$this->name = 'easymarketing';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.3.0';
+		$this->version = '0.4.0';
 		$this->author = 'easymarketing';
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
@@ -2304,9 +2304,13 @@ class Easymarketing extends Module {
 		{
 			$conversion_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_CONVERSION_TRACKER')));
 
+			$tmp = '';
 			if (isset($conversion_tracker->code)) {
-				$return .= preg_replace('/(google_conversion_value\s=\s.+;)/i',
+				$tmp .= preg_replace('/(google_conversion_value\s=\s.+;)/i',
 						'google_conversion_value = '.$params['total_to_pay'].';', $conversion_tracker->code)."\r\n";
+
+				$return .= preg_replace('/(value=\d\.\d+&)/i',
+						'value='.$params['total_to_pay'].'&', $tmp)."\r\n";
 			}
 
 			if (isset($conversion_tracker->fb_code))
@@ -2523,7 +2527,6 @@ class Easymarketing extends Module {
                     			implode("\n", $ecomm_others).'}; </script>';
 
 				$remarketing_code->code = preg_replace('/(var google_tag_params\s\=\s\{.+\};)/s', '', $remarketing_code->code);
-
 				$return .= $code."\n".$remarketing_code->code;
 			}
 		}
