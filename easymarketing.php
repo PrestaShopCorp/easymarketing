@@ -2309,7 +2309,7 @@ class Easymarketing extends Module {
 				$tmp .= preg_replace('/(google_conversion_value\s=\s.+;)/i',
 						'google_conversion_value = '.$params['total_to_pay'].';', $conversion_tracker->code)."\r\n";
 
-				$return .= preg_replace('/(value=\d\.\d+&)/i',
+				$return .= preg_replace('/(value=.+&)/i',
 						'value='.$params['total_to_pay'].'&', $tmp)."\r\n";
 			}
 
