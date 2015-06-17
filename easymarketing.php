@@ -35,7 +35,7 @@ class Easymarketing extends Module {
 	{
 		$this->name = 'easymarketing';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.4.1';
+		$this->version = '0.4.2';
 		$this->author = 'easymarketing';
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
@@ -2347,7 +2347,11 @@ class Easymarketing extends Module {
 					if (isset($lead_tracker->code))
 					{
 						$return .= '<!-- google_lead_tracker -->';
-						$return .= $lead_tracker->code;
+						$tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i',
+								'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+
+						$return .= preg_replace('/(value=.+?&)/i',
+								'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
 					}
 					if (isset($lead_tracker->fb_code))
 					{
@@ -2368,7 +2372,11 @@ class Easymarketing extends Module {
 				if (isset($lead_tracker->code))
 				{
 					$return .= '<!-- google_lead_tracker -->';
-					$return .= $lead_tracker->code;
+					$tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i',
+							'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+
+					$return .= preg_replace('/(value=.+?&)/i',
+							'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
 				}
 				if (isset($lead_tracker->fb_code))
 				{
@@ -2388,7 +2396,11 @@ class Easymarketing extends Module {
 				if (isset($lead_tracker->code))
 				{
 					$return .= '<!-- google_lead_tracker -->';
-					$return .= $lead_tracker->code;
+					$tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i',
+							'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+
+					$return .= preg_replace('/(value=.+?&)/i',
+							'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
 				}
 				if (isset($lead_tracker->fb_code))
 				{
