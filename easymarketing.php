@@ -2186,9 +2186,12 @@ class Easymarketing extends Module {
 			'google_category'=> isset(self::$google_category_names[$product['id_category_default']])?
 					self::$google_category_names[$product['id_category_default']]:'',
 			'adult'          => false,
-			'brand'          => Manufacturer::getNameById($product['id_manufacturer']),
 			'mpn'            => $product['reference'],
 		);
+
+        if (Manufacturer::getNameById($product['id_manufacturer']) !== false) {
+            $prod['brand'] = Manufacturer::getNameById($product['id_manufacturer']);
+        }
 
 		//Variant products - combinations
 		if (isset($product['id_product_attribute']) && $product['id_product_attribute'] > 0)
