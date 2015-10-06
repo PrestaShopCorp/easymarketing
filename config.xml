@@ -2,7 +2,7 @@
 <module>
     <name>easymarketing</name>
     <displayName><![CDATA[Easymarketing &ndash; Sales Turbo with Immediate Effect]]></displayName>
-    <version><![CDATA[0.4.2]]></version>
+    <version><![CDATA[0.4.3]]></version>
     <description><![CDATA[Easymarketing automatizes your advertising campaigns on Google, Google Shopping and Facebook and makes intelligent retargeting possible for you.]]></description>
     <author><![CDATA[easymarketing]]></author>
     <tab><![CDATA[advertising_marketing]]></tab>
