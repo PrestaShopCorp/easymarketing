@@ -35,7 +35,7 @@ class Easymarketing extends Module {
 	{
 		$this->name = 'easymarketing';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.4.3';
+		$this->version = '0.4.4';
 		$this->author = 'easymarketing';
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
@@ -2171,7 +2171,7 @@ class Easymarketing extends Module {
 			'condition'  => $product['condition'],
 			'availability' => (Product::getQuantity($product['id_product'], $product['id_product_attribute'], null) > 0)?'in stock':
 					(Product::isAvailableWhenOutOfStock($product['out_of_stock'])?'out of stock':'preorder'),
-			'price' => (float)Product::getPriceStatic($product['id_product'], true, null, 2, null, false,
+			'price' => (float)Product::getPriceStatic($product['id_product'], true, $product['id_product_attribute'], 2, null, false,
 					false),
 			'currency' => $currency->iso_code,
 			'url' => $this->context->link->getProductLink($product['id_product'], null, null, null,
