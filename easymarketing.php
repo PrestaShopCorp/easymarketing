@@ -35,7 +35,7 @@ class Easymarketing extends Module {
 	{
 		$this->name = 'easymarketing';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.4.4';
+		$this->version = '0.4.5';
 		$this->author = 'easymarketing';
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
@@ -1757,6 +1757,8 @@ class Easymarketing extends Module {
 								$only_active = false, Context $context = null, $unique_id = false,
 								$newer_than = false)
 	{
+		if ((int)$limit <= 0) $limit = 1;
+
 		if (count(self::$export_categories) == 0) self::$export_categories =
 			Tools::jsonDecode(Configuration::get('EASYMARKETING_EXPORT_CATEGORIES'));
 
@@ -1859,6 +1861,12 @@ class Easymarketing extends Module {
 		if ($front)
 			$sql->where('product_shop.`visibility` IN ("both", "catalog")');
 
+		if (Combination::isFeatureActive())
+		{
+			// exclude products which have combinations
+			$sql->where('p.`id_product` NOT IN (SELECT pta.id_product FROM '._DB_PREFIX_.'product_attribute pta WHERE pta.id_product=p.`id_product`)');
+		}
+
 		if ($newer_than)
 			$sql->where('UNIX_TIMESTAMP(p.`date_upd`) > '.(int)$newer_than);
 
@@ -1876,21 +1884,26 @@ class Easymarketing extends Module {
 		//}
 
 
-		$sql->select('p.`condition`,
-			 p.`reference` AS reference, p.`ean13`,
+		$sql->select('0 AS `id_product_attribute`, 0 AS price_attribute, 0 AS ecotax_attr,
+		     p.`reference` AS reference,
+		     0 AS weight_attribute,
+			 p.`ean13`,
 			 CONCAT(1, LPAD(p.`id_product`, 7, 0), LPAD(0, 7, 0)) AS unique_id,
-			 p.`upc` AS upc, product_shop.`minimal_quantity` AS minimal_quantity'
+			 p.`upc` AS upc,
+			 product_shop.`minimal_quantity` AS minimal_quantity'
 		);
 		$sql->join(Product::sqlStock('p'));
 		$sql->leftJoin('product_supplier', 'ps', 'ps.`id_product` = p.`id_product` AND ps.`id_supplier` = p.`id_supplier`');
 
 		//echo $sql->build();
+		$sql_products = $sql->build();
 
-		$rproducts = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+		//$rproducts = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 		//print_r($rproducts);
 
 		// 2. get combinations
 		$rcombinations = array();
+		$sql_combinations = '';
 		if (Combination::isFeatureActive() && Configuration::get('EASYMARKETING_EXPORT_COMBINATIONS') == 1)
 		{
 			$sql = new DbQuery();
@@ -1964,16 +1977,14 @@ class Easymarketing extends Module {
 			//if ($limit) {
 			//$sql->limit((int)$limit, (int)$start);
 			//}
-
-			$sql->select('
-				pa.`id_product_attribute`, product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr,
+			//				pai.`id_image` as pai_id_image, il.`legend` as pai_legend,
+			$sql->select('pa.`id_product_attribute`, product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr,
 				IF (IFNULL(pa.`reference`, \'\') = \'\', p.`reference`, pa.`reference`) AS reference,
 				(p.`weight`+ pa.`weight`) weight_attribute,
 				IF (IFNULL(pa.`ean13`, \'\') = \'\', p.`ean13`, pa.`ean13`) AS ean13,
+				CONCAT(1, LPAD(p.`id_product`, 7, 0), LPAD(IFNULL(pa.`id_product_attribute`, 0), 7, 0)) AS unique_id,
 				IF (IFNULL(pa.`upc`, \'\') = \'\', p.`upc`, pa.`upc`) AS upc,
-				pai.`id_image` as pai_id_image, il.`legend` as pai_legend,
-				IFNULL(product_attribute_shop.`minimal_quantity`, product_shop.`minimal_quantity`) as minimal_quantity,
-				CONCAT(1, LPAD(p.`id_product`, 7, 0), LPAD(IFNULL(pa.`id_product_attribute`, 0), 7, 0)) AS unique_id
+				IFNULL(product_attribute_shop.`minimal_quantity`, product_shop.`minimal_quantity`) as minimal_quantity
 			');
 
 			$sql->leftJoin('product_attribute', 'pa', 'pa.`id_product` = p.`id_product`');
@@ -1985,10 +1996,59 @@ class Easymarketing extends Module {
 			$sql->leftJoin('product_supplier', 'ps', 'ps.`id_product` = p.`id_product` AND ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_supplier` = p.`id_supplier`');
 
 
-			$rcombinations = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+			//$rcombinations = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+			$sql_combinations = $sql->build();
 		}
 
+
+		if ($sql_combinations != '') {
+			$sql_general = '('.$sql_products.') UNION ('.$sql_combinations.') ORDER BY unique_id LIMIT '.(int)$start.','.(int)$limit;
+		} else {
+			$sql_general = $sql_products.' ORDER BY unique_id LIMIT '.(int)$start.','.(int)$limit;
+		}
+		$rproducts = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql_general);
+
+		//
+
+		// add attributes  to name
+		foreach ($rproducts as $k => $product) {
+			if ($product['id_product_attribute'] > 0) {
+				$sql = 'SELECT ag.`id_attribute_group`, agl.`name` AS group_name, al.`name`  AS attribute_name  ,
+		                a.`id_attribute` FROM `'._DB_PREFIX_.'product_attribute` pa
+			            LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
+			            ON  pac.`id_product_attribute` = pa.`id_product_attribute`
+			            LEFT JOIN `'._DB_PREFIX_.'attribute` a
+			            ON  a.`id_attribute` = pac.`id_attribute`
+		                LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag
+						ON  ag.`id_attribute_group` = a.`id_attribute_group`
+						LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al
+						ON  a.`id_attribute` = al.`id_attribute`
+						LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+						ON  ag.`id_attribute_group` = agl.`id_attribute_group`
+						'.self::addShopSqlAssociation('product_attribute', 'pa', true, null, false,
+						$this->context->shop->id).'
+						WHERE al.`id_lang`='.(int)($id_lang).'
+						AND  agl.`id_lang`='.(int)($id_lang).'
+						AND  pa.`id_product_attribute` = '.(int)($product['id_product_attribute']).'
+
+						ORDER BY ag.`id_attribute_group` ASC';
+				$rattr = Db::getInstance()->ExecuteS($sql);
+				$newProductName = array();
+				foreach ($rattr as $attribute)
+				{
+					$newProductName[] = trim($attribute['group_name']).': '.trim($attribute['attribute_name']);
+
+					$rproducts[$k]['attributes'][$attribute['id_attribute_group']] = $attribute;
+				}
+
+				$rproducts[$k]['name']  = $rproducts[$k]['name'].' ('.implode(', ', $newProductName).')';
+			}
+		}
+
+		//print_r($rproducts);
+
 		// remove products which have combinations
+		/*
 		if (count($rcombinations))
 		{
 			foreach ($rcombinations as $c => $combination)
@@ -2037,12 +2097,14 @@ class Easymarketing extends Module {
 				$rcombinations[$c]['name']  = $rcombinations[$c]['name'].' ('.implode(', ', $newProductName).')';
 			}
 		}
+		*/
+
 		// merge arrays
-		$rproducts = array_merge($rproducts, $rcombinations);
-		unset($rcombinations);
+		//$rproducts = array_merge($rproducts, $rcombinations);
+		//unset($rcombinations);
 
 		// sort by unique_id
-		self::orderbyUniqueId($rproducts);
+		/*self::orderbyUniqueId($rproducts);
 
 		// reindex
 		$rproducts = array_values($rproducts);
@@ -2058,9 +2120,13 @@ class Easymarketing extends Module {
 			$result[] = $rproducts[$k];
 		}
 		unset($rproducts);
+		*/
+		$result = $rproducts;
 
-		foreach ($result as &$row)
+		foreach ($result as $k => &$row) {
 			$row = Product::getTaxesInformations($row);
+			if (!isset($row[$k]['id_product_attribute']) || $row[$k]['id_product_attribute'] == 0) $row[$k]['id_product_attribute'] = null;
+		}
 
 		//echo '<pre>'.print_r(self::$export_categories, true).'</pre>';
 		//echo '<pre>'.print_r($result, true).'</pre>';
