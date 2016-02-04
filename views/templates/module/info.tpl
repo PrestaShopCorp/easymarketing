@@ -31,7 +31,7 @@
             <div class="hiddenblock-mobile">
                 <h4>{l s='Easymarketing automatizes your advertising campaigns' mod='easymarketing'}</h4>
                 <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/em-compaigns-mobile.jpg" alt="easymarketing" class="img-responsive" /></p>
-	            <p class="em-button vis-mobile"><a href="">Jetzt Registrieren <img src="{$_path|escape:'htmlall':'UTF-8'}img/em-arrow.jpg" alt="easymarketing"  /></a></p>
+	            <p class="em-button vis-mobile"><a target="_blank" href="https://easymarketing.de/signup">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}img/em-arrow.jpg" alt="easymarketing"  /></a></p>
             </div>
 
 		</div>
