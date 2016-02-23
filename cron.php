@@ -33,4 +33,3 @@ $log_type = 'cron';
 $message = '===== '.date('Y.m.d h:i:s').' ====='."\r\n";
 $message .= 'Return: '.print_r($return, true)."\r\n";
 Easymarketing::logToFile($message, $log_type);
-?>

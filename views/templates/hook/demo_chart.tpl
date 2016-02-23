@@ -15,4 +15,4 @@
 * @copyright 2014 Easymarketing AG
 * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 *}
-<iframe class="chart_frame" seamless="seamless" scrolling="no" frameborder="0" allowtransparency="true" width="{$width}px" height="{$height}px" src="https://api.easymarketing.de/demo_chart?website_url={$site_url}&partner_id={$partner_id}&version={$version}"></iframe>
+<iframe class="chart_frame" seamless="seamless" scrolling="no" frameborder="0" allowtransparency="true" width="{$width|escape:'htmlall':'UTF-8'}px" height="{$height|escape:'htmlall':'UTF-8'}px" src="https://api.easymarketing.de/demo_chart?website_url={$site_url|escape:'htmlall':'UTF-8'}&partner_id={$partner_id|escape:'htmlall':'UTF-8'}&version={$version|escape:'htmlall':'UTF-8'}"></iframe>

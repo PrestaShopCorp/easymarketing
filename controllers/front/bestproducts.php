@@ -19,40 +19,40 @@
 
 class EasymarketingBestproductsModuleFrontController extends ModuleFrontController
 {
-	public $display_header = false;
-	public $display_footer = false;
+    public $display_header = false;
+    public $display_footer = false;
 
 
-	public function initContent()
-	{
-		parent::initContent();
+    public function initContent()
+    {
+        parent::initContent();
 
-		$log_type = 'best_products';
-		$response = null;
-		$message = '===== '.date('Y.m.d h:i:s').' ====='."\r\n";
-		$message .= 'Request: '.print_r($_GET, true);
+        $log_type = 'best_products';
+        $response = null;
+        $message = '===== '.date('Y.m.d h:i:s').' ====='."\r\n";
+        $message .= 'Request: '.print_r($_GET, true);
 
-		if (Tools::getValue('shop_token') == Configuration::get('EASYMARKETING_SHOP_TOKEN'))
-		{
-			if (Tools::getIsset('limit') && Validate::isInt(Tools::getValue('limit')) &&
-				Tools::getIsset('most_sold_since') && Validate::isInt(Tools::getValue('most_sold_since')))
-			{
-				$limit = (int)Tools::getValue('limit');
-				$most_sold_since = (int)Tools::getValue('most_sold_since');
+        if (Tools::getValue('shop_token') == Configuration::get('EASYMARKETING_SHOP_TOKEN')) {
+            if (Tools::getIsset('limit') && Validate::isInt(Tools::getValue('limit')) &&
+                Tools::getIsset('most_sold_since') && Validate::isInt(Tools::getValue('most_sold_since'))
+            ) {
+                $limit = (int)Tools::getValue('limit');
+                $most_sold_since = (int)Tools::getValue('most_sold_since');
 
-				$response = array(
-					'limit' => $limit,
-					'most_sold_since' => $most_sold_since,
-					'products' => $this->module->getBestProducts($limit, $most_sold_since)
-				);
-			}
-		}
+                $response = array(
+                    'limit' => $limit,
+                    'most_sold_since' => $most_sold_since,
+                    'products' => $this->module->getBestProducts($limit, $most_sold_since)
+                );
+            }
+        }
 
-		$message .= 'Response: '.print_r($response, true);
-		Easymarketing::logToFile($message, $log_type);
-		if ($response != null)
-			die(Tools::jsonEncode($response));
-		else
-			die();
-	}
+        $message .= 'Response: '.print_r($response, true);
+        Easymarketing::logToFile($message, $log_type);
+        if ($response != null) {
+            die(Tools::jsonEncode($response));
+        } else {
+            die();
+        }
+    }
 }
