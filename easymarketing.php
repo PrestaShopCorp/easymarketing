@@ -35,7 +35,7 @@ class Easymarketing extends Module {
 	{
 		$this->name = 'easymarketing';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.4.6';
+		$this->version = '0.4.7';
 		$this->author = 'easymarketing';
 		$this->need_instance = 0;
 		$this->ps_versions_compliancy = array(
@@ -756,6 +756,8 @@ class Easymarketing extends Module {
 			Configuration::get('EASYMARKETING_EXPORT_COMBINATIONS');
 		$helper->fields_value['EASYMARKETING_CONVERSION_TRACKER_ENABLED'] =
 			Configuration::get('EASYMARKETING_CONVERSION_TRACKER_ENABLED');
+		$helper->fields_value['EASYMARKETING_PROD_DESCR'] =
+			Configuration::get('EASYMARKETING_PROD_DESCR');
 		$helper->fields_value['EASYMARKETING_LEAD_TRACKER_ENABLED'] =
 			Configuration::get('EASYMARKETING_LEAD_TRACKER_ENABLED');
 		$helper->fields_value['EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED'] =
@@ -923,6 +925,23 @@ class Easymarketing extends Module {
 		}
 	}
 
+	private function arrayToFormInputOptions($source, $id = 'id_option', $name = 'name') {
+		$query = array();
+		foreach ($source as $k => $v) {
+			$query[] = array($id => $k, $name => $v);
+		}
+
+		return array(
+			'query' => $query,
+			'id' => $id,
+			'name' =>  $name
+		);
+	}
+
+	private function getProductDescriptionFieldNames() {
+		return array('description' => $this->l('Description'), 'description_short' => $this->l('Short Description'));
+	}
+
 	protected function getFormFieldsSettings()
 	{
 		$conversion_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_CONVERSION_TRACKER')));
@@ -995,6 +1014,12 @@ class Easymarketing extends Module {
 						'name' => 'attributes',
 						'label' => $this->l('Attributes mapping'),
 						'html_content' => $this->displayAttributesMapping(),
+					),
+					array(
+						'type' => 'select',
+						'label' => $this->l('Product description mapping'),
+						'name' => 'EASYMARKETING_PROD_DESCR',
+						'options' => $this->arrayToFormInputOptions($this->getProductDescriptionFieldNames()),
 					),
 					array(
 						'name' => 'EASYMARKETING_CONVERSION_TRACKER_ENABLED',
@@ -1191,8 +1216,8 @@ class Easymarketing extends Module {
 			if (!Configuration::updateValue('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING', Tools::jsonEncode($attr_mapping)))
 				$this->_errors[] = $this->l('Could not update').': EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING';
 
-
-
+			if (!Configuration::updateValue('EASYMARKETING_PROD_DESCR', Tools::getValue('EASYMARKETING_PROD_DESCR')))
+				$this->_errors[] = $this->l('Could not update').': EASYMARKETING_PROD_DESCR';
 
 			if (!Configuration::updateValue('EASYMARKETING_CONVERSION_TRACKER_ENABLED',
 				(int)Tools::getValue('EASYMARKETING_CONVERSION_TRACKER_ENABLED')))
@@ -2230,6 +2255,11 @@ class Easymarketing extends Module {
 			);
 		}
 
+		$description_field_name = 'description';
+		if (in_array(Configuration::get('EASYMARKETING_PROD_DESCR'), array_keys($this->getProductDescriptionFieldNames()))) {
+			$description_field_name = Configuration::get('EASYMARKETING_PROD_DESCR');
+		}
+
 		$prod = array(
 			'id' => $product['unique_id'],
 			'name' => $product['name'],
@@ -2245,8 +2275,8 @@ class Easymarketing extends Module {
 			'image_url' => $this->context->link->getImageLink($product['link_rewrite'],
 					$product['id_product'].'-'.$cover['id_image'], null),
 			'shipping' => $shipping,
-			'description' => $product['description'],
-			'gtin' => $product['ean13'],
+			'description' => strip_tags($product[$description_field_name]),
+			'gtin' => ($product['ean13'] != '')?$product['ean13']:$product['upc'],
 
 			//attributes are optional per product
 			'google_category'=> isset(self::$google_category_names[$product['id_category_default']])?
