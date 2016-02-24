@@ -16,29 +16,29 @@
 * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 *}
 
-<link href="../modules/easymarketing/css/easymarketing.css" rel="stylesheet" type="text/css"/>
+<link href="../modules/easymarketing/views/css/easymarketing.css" rel="stylesheet" type="text/css"/>
     
 <div class="clearfix em-frame">
-            <p class="pull-left"><img src="{$_path|escape:'htmlall':'UTF-8'}img/easymarketing-logo.png" alt="easymarketing" class="img-responsive" /></p>
-            <p class="pull-right"><img src="{$_path|escape:'htmlall':'UTF-8'}img/labels-right.jpg" alt="easymarketing" class="img-responsive" /></p>
+            <p class="pull-left"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/easymarketing-logo.png" alt="easymarketing" class="img-responsive" /></p>
+            <p class="pull-right"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/labels-right.jpg" alt="easymarketing" class="img-responsive" /></p>
 </div>
 
 <div class="panel orange-grad">
     <div class="row em-frame ">
         <div class="col-md-3 topcol">
-            <p class="robot"><img src="{$_path|escape:'htmlall':'UTF-8'}img/robot.png" alt="easymarketing" /></p>
+            <p class="robot"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/robot.png" alt="easymarketing" /></p>
 
             <div class="hiddenblock-mobile">
                 <h4>{l s='Easymarketing automatizes your advertising campaigns' mod='easymarketing'}</h4>
-                <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/em-compaigns-mobile.jpg" alt="easymarketing" class="img-responsive" /></p>
-	            <p class="em-button vis-mobile"><a href="">Jetzt Registrieren <img src="{$_path|escape:'htmlall':'UTF-8'}img/em-arrow.jpg" alt="easymarketing"  /></a></p>
+                <p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-compaigns-mobile.jpg" alt="easymarketing" class="img-responsive" /></p>
+	            <p class="em-button vis-mobile"><a target="_blank" href="https://easymarketing.de/signup">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-arrow.jpg" alt="easymarketing"  /></a></p>
             </div>
 
 		</div>
         <div class="col-md-5">
             <div class="block-desktop">
                 <h4>{l s='Easymarketing automatizes your advertising campaigns' mod='easymarketing'}</h4>
-                <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/em-compaigns.gif" alt="easymarketing" class="img-responsive" /></p>
+                <p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-compaigns.gif" alt="easymarketing" class="img-responsive" /></p>
 			</div>
 		<div class="checks">
             <ul>
@@ -47,13 +47,13 @@
             	<li>{l s='No hidden costs' mod='easymarketing'}</li>
             	<li>{l s='No minimum term of contract' mod='easymarketing'}</li>
             </ul>
-            <p class="em-button vis-desktop"><a href="">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}img/em-arrow.jpg" alt="easymarketing"  /></a></p>
+            <p class="em-button vis-desktop"><a href="">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-arrow.jpg" alt="easymarketing"  /></a></p>
         </div>
         </div>
 
         <div class="col-md-4 text-left">
 {*            {$demochart}  *}
-{*			 <p><img src="{$_path|escape:'htmlall':'UTF-8'}img/video.png" alt="easymarketing" class="img-responsive" /></p> *}
+{*			 <p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/video.png" alt="easymarketing" class="img-responsive" /></p> *}
 	    <div class="em-video">
 			<object type="text/html" data="//www.youtube.com/embed/4L_SY9T7vks?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3&amp;controls=0&amp;showinfo=0'" width="308" height="176"></object>
 	    </div>
@@ -64,19 +64,19 @@
 	    <h4>{l s='Maximal Performance through Fully Automated Marketing' mod='easymarketing'}</h4>
         <div class="col-md-4 text-left">
         	<h5><span>1</span> {l s='Webshop Analysis' mod='easymarketing'}</h5>
-			<p><img src="{$_path|escape:'htmlall':'UTF-8'}img/pic-1.png" alt="easymarketing" class="img-responsive" /></p>
+			<p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/pic-1.png" alt="easymarketing" class="img-responsive" /></p>
             <p class="itemtxt">{l s='Our system analyses your webshop and identifies the relevant keywords.' mod='easymarketing'}</p>
 		</div>
 
         <div class="col-md-4 text-left">
         	<h5><span>2</span> {l s='Advertisement Creation' mod='easymarketing'}</h5>
-			<p><img src="{$_path|escape:'htmlall':'UTF-8'}img/pic-2.png" alt="easymarketing" class="img-responsive" /></p>
+			<p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/pic-2.png" alt="easymarketing" class="img-responsive" /></p>
             <p class="itemtxt">{l s='Our system sets up your campaigns and creates the advertisements.' mod='easymarketing'}</p>
 		</div>
 
         <div class="col-md-4 text-left">
         	<h5><span>3</span> {l s='Advertisement Optimization' mod='easymarketing'}</h5>
-			<p><img src="{$_path|escape:'htmlall':'UTF-8'}img/pic-3.png" alt="easymarketing" class="img-responsive" /></p>
+			<p><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/pic-3.png" alt="easymarketing" class="img-responsive" /></p>
             <p class="itemtxt">{l s='Our system constantly optimizes the advertisements, improving the results.' mod='easymarketing'}</p>
 		</div>
         
