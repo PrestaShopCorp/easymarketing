@@ -1093,7 +1093,8 @@ class Easymarketing extends Module
                             '<p>'.$this->l('This cron job will get updates codes of trackers every night at 1:00am.').
                             ' '.$this->l('It has same action as manually pressing button').
                             ' "'.$this->l('Download trackers codes').'".'.
-                            '<p><code>1 * * * * php -f '.dirname(__FILE__).DIRECTORY_SEPARATOR.'cron.php</code>'
+                            '<p><code>1 * * * * php -f '.dirname(__FILE__).DIRECTORY_SEPARATOR.'cron.php token='.Tools::substr(Tools::encrypt('easymarketing/cron'), 0, 10).'</code>'.
+                            '<p>or use URL: <code>'.Tools::getProtocol(Tools::usingSecureMode()).$_SERVER['HTTP_HOST'].$this->getPathUri().'cron.php?token='.Tools::substr(Tools::encrypt('easymarketing/cron'), 0, 10).'</code>'
                     ),
                     array(
                         'name' => 'EASYMARKETING_LOG_ENABLED',
@@ -1934,7 +1935,7 @@ class Easymarketing extends Module
         $sql->groupBy('unique_id');
 
         // Build ORDER BY
-        $sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
+        //$sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
 
         //if ($limit) {
         //$sql->limit((int)$limit, (int)$start);
@@ -2020,7 +2021,7 @@ class Easymarketing extends Module
             $sql->groupBy('unique_id');
 
             // Build ORDER BY
-            $sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
+            //$sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
 
             //if ($limit) {
             //$sql->limit((int)$limit, (int)$start);
