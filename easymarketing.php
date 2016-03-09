@@ -39,6 +39,7 @@ class Easymarketing extends Module
         $this->tab = 'advertising_marketing';
         $this->version = '0.4.7';
         $this->author = 'easymarketing';
+        $this->module_key = 'cc7d8cbd1dbe4d6a14e33c7a6570289e';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
             'min' => '1.6.0.0',
