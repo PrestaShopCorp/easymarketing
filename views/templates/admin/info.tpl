@@ -47,7 +47,7 @@
             	<li>{l s='No hidden costs' mod='easymarketing'}</li>
             	<li>{l s='No minimum term of contract' mod='easymarketing'}</li>
             </ul>
-            <p class="em-button vis-desktop"><a href="">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-arrow.jpg" alt="easymarketing"  /></a></p>
+            <p class="em-button vis-desktop"><a target="_blank" href="https://easymarketing.de/signup">{l s='Register now' mod='easymarketing'} <img src="{$_path|escape:'htmlall':'UTF-8'}views/img/em-arrow.jpg" alt="easymarketing"  /></a></p>
         </div>
         </div>
 
