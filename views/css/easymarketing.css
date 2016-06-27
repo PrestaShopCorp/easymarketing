@@ -5,41 +5,33 @@
 .em-wrapper h4
 { font-family: "sinkin_sans300_light"; }
 
-.em-wrapper h1 { font-size: 40px; letter-spacing: -.03em; color: #505050; margin:19px 0 0 0!important }
-.em-wrapper h3 { font-size: 17px!important; letter-spacing: -0.01em; color: #FF7A00; margin: 6px 0!important; padding: 2px 0 59px!important; text-transform:none!important; }
-.em-wrapper h2 { font-weight: bold; font-size: 19px; letter-spacing:-0.03em; margin: 32px 0 38px!important; color: #505050; }
-.em-wrapper h4 {color: #505050; font-size: 17px; font-weight:bold; margin-bottom: 30px; }
+.em-wrapper h1 { font-size: 30px; letter-spacing: -.03em; color: #515151; margin:19px 0 0 0!important }
+.em-wrapper h3 { font-size: 25px!important; letter-spacing: -0.01em; color: #DE006E; margin: 6px 0!important; padding: 2px 0 59px!important; text-transform:none!important; line-height: normal!important; border: 0 none!important }
+.em-wrapper h2 { font-weight: bold; font-size: 19px; letter-spacing:-0.03em; margin: 32px 0 38px!important; color: #515151; }
+.em-wrapper h4 {color: #515151; font-size: 17px; font-weight:bold; margin-bottom: 20px; }
 .em-box p { font-size: 16px; }
 
 
 .em-box { 
-	background: #e7e7e7;
+	background: #F6F6F6;
 	padding: 15px 20px;
-	color: #505050;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	margin: 0 50px;
-	height: 260px;
+	color: #515151;
 }
 
-.em-button a { background: #FF7A00; text-transform: uppercase; font-size: 20px; letter-spacing:-0.03em; display:inline-block; padding: 5px 45px 9px; line-height:22px; color: white; 
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
+.em-button a { background: #DE006E; text-transform: uppercase; font-size: 16px; display:inline-block; padding: 5px 45px 9px; color: white; font-weight: normal;
 }
 
 .em-button a:hover {text-decoration: none; color:white; }
 
-.bottomblock  { margin-top: 40px; }
-.bottomblock  small { font-size:14px; margin: 10px 0; display: inline-block; letter-spacing:-0.03em; }
+.em-wrapper  { margin-top: 40px; }
+.em-wrapper  small { font-size:14px; margin: 10px 0; display: inline-block; letter-spacing:-0.03em; }
 
 .addWordsbanner  { margin: 40px 0 20px; }
 
 .robot { background: url(../img/robot.png); width: 165px; height: 199px; position: absolute; right:20px; bottom: 20px;  }
 .featured { font-size: 15px; margin-bottom: 5px; }
-.greystripe {
-  background: #e7e7e7 url(../img/ps-logo.png) 24px center no-repeat ;
-  height: 40px;
-  margin: 0 -37px -24px;
-}
+.em-box .text-pink { color: #DE006E; font-size: 20px; }
+.gImages { padding: 20px 0; border-top: solid 1px #eee; }
+.gImages img { margin: auto; display: block; }
+.outersmall { font-size: 11px!important; display:block!important; }
+.clearer { float: none; clear: both; overflow: hidden; }

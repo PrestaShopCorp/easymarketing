@@ -17,57 +17,35 @@
 *}
 
 <link href="../modules/easymarketing/views/css/easymarketing.css" rel="stylesheet" type="text/css"/>
-<link href="../modules/easymarketing/views/fonts/sinkinsans_300light_macroman/stylesheet.css" rel="stylesheet" type="text/css"/>
+<link href="../modules/easymarketing/views/css/stylesheet.css" rel="stylesheet" type="text/css"/>
 
 <div class="panel em-wrapper">
 
 <div class="row">
-	<div class="pull-left"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/easymarketing-logo.png" alt="easymarketing" class="img-responsive" /></div>
-	<div class="pull-right"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/smb.png" alt="Google Premier SMB Partner Award" class="img-responsive" /></div>
+	<div class="pull-left"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/prestashop-logo.png" alt="prestashop" class="img-responsive" /></div>
+	<div class="pull-right"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/logo_award.png" alt="Google Premier SMB Partner Award" class="img-responsive" /></div>
 </div>
 
 <div class="container text-center">
-	<h1>{l s='Smart advertising on Google Shopping' mod='easymarketing'}</h1>
-	<h3>{l s='38% lower customer acquisitition cost through certified technology' mod='easymarketing'}</h3>
+	<h1>{l s='Boost your marketing performance by 38%* with smart technology' mod='easymarketing'}</h1>
+	<h3>{l s='Fully automated & top performing campaign management' mod='easymarketing'}</h3>
 
 <!-- already advertiging -->
-	<div class="col-md-6 text-left">
-		<h2 class="text-center">{l s='Already advertising on Google?' mod='easymarketing'}</h2>
-		<div class="box em-box">
-			<h4>{l s='Start now our "Maintenance package"' mod='easymarketing'}</h4>
-			<p>
-				- {l s='free account analysis' mod='easymarketing'}</br>
-				- {l s='free compaign optimizations' mod='easymarketing'}
-			</p>
+	<div class="col-md-8 text-left col-md-push-2">
+		<div class="gImages"><img class="img-responsive" src="{$_path|escape:'htmlall':'UTF-8'}views/img/google-logos.png" /></div>
+		<div class="box em-box text-center">
+			<h4>{l s='Start to advertise on Google' mod='easymarketing'} &ndash;  <i>{l s='efficiently!' mod='easymarketing'}</i></h4>
+			<p class="text-pink text-center">{l s='For' mod='easymarketing'} &euro; 0</p>
 			<div class="bottomblock text-center">
 				<div class="em-button"><a href="https://easymarketing.de/free_analysis/prestashop" target="_blank">{l s='Start now' mod='easymarketing'}</a></div>
-				<small>{l s='Your data will not be stored with easymarketing.' mod='easymarketing'} </br>{l s='No obligations. No cost.' mod='easymarketing'}</small>
+				<small>{l s='No risk. No cost. No obligations. ' mod='easymarketing'}</small>
 			</div>
 		</div>
 	</div>
+	<div class="clearer"></div>
+	<small class="outersmall">{l s='Your data will not be stored permanently or passed on to third parties. No minimum contract period or fee.' mod='easymarketing'}</small>
+	<small class="outersmall">{l s='* On average - Benchmark study, June 2015' mod='easymarketing'}</small>
 
-<!-- Your first campaign -->
-	<div class="col-md-6 text-left">
-		<h2 class="text-center">{l s='Your first campaign on Google?' mod='easymarketing'}</h2>
-		<div class="box em-box">
-			<h4>{l s='Your first steps with our "Starter package"' mod='easymarketing'}</h4>
-			<p>
-				- {l s='free extension to connect your shop to Google' mod='easymarketing'}</br>
-				- {l s='free set-up & consulting' mod='easymarketing'}
-			</p>
-			<div class="bottomblock text-center">
-				<div class="em-button"><a href="https://easymarketing.de/signup" target="_blank">{l s='Sign up now' mod='easymarketing'}</a></div>
-			</div>
-		</div>
-	</div>
 
 </div>
-<div class="addWordsbanner container text-center"><img src="{$_path|escape:'htmlall':'UTF-8'}views/img/addwords.png" alt="Google AddWords"  /></div>
-
-<div class="row">
-	<div class="pull-left featured">{l s='Featured by:' mod='easymarketing'}</div>
-</div>
-
-<div class="greystripe"></div>
-<div class="robot"></div>
 </div>

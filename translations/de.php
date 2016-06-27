@@ -2,8 +2,6 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{easymarketing}prestashop>easymarketing_d26a278d07f0e66ef0b7727e87398811'] = 'easymarketing - Die smarte Lösung für Online-Werbung auf Google';
-$_MODULE['<{easymarketing}prestashop>easymarketing_e53eff959e402f6973aebb61d068dec1'] = 'easymarketing automatisiert und optimiert Ihre Werbekampagnen auf Google und reduziert Ihre Kosten pro Neukunde um 38%';
 $_MODULE['<{easymarketing}prestashop>easymarketing_876f23178c29dc2552c0b48bf23cd9bd'] = 'Sind Sie sicher, dass Sie das deinstallieren möchten?';
 $_MODULE['<{easymarketing}prestashop>easymarketing_0e6a6be1744f5b97426feb6b90effb84'] = ' Sie müssen cURL Erweiterung in PHP aktivieren.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_e69e2a3bab3657f9dc3b7b9bdd813b1e'] = 'Daten der Google Website-Prüfung sind nicht verfügbar.';
@@ -45,21 +43,15 @@ $_MODULE['<{easymarketing}prestashop>easymarketing_cadb316ef330d5723f9b21bf443a8
 $_MODULE['<{easymarketing}prestashop>easymarketing_cb8213d0e5b2309ef52ce8c38dc0b47e'] = ' \"Tracker-Code runterladen\" Operation wurde nicht abgeschlossen';
 $_MODULE['<{easymarketing}prestashop>easymarketing_e8d941013c3580574c9b35b05dd0e6d2'] = 'Konnte nicht aktualisieren';
 $_MODULE['<{easymarketing}prestashop>easymarketing_c888438d14855d7d96a2724ee9c306bd'] = 'Einstellungen aktualisieren';
-$_MODULE['<{easymarketing}prestashop>info_fd9b5c948b3d49e87dab515a6aef826a'] = 'Die smarte Lösung für Online-Werbung auf Google';
-$_MODULE['<{easymarketing}prestashop>info_858baba69a22a4ccad643e44773d52f7'] = 'Wir senken Ihre Marketing-Kosten pro Neukunde dank moderner Technologien im Schnitt um 38%*';
-$_MODULE['<{easymarketing}prestashop>info_6714dc64f4c560e75d40f701f8bc4202'] = 'Werben Sie bereits auf Google?';
-$_MODULE['<{easymarketing}prestashop>info_5f2b6c5f1a07a94862cf1deb2e9c5e1b'] = 'Starten Sie das \"Pflege-Paket\"';
-$_MODULE['<{easymarketing}prestashop>info_209498741d0d34074042374708919e7e'] = 'kostenlose Account Analyse';
-$_MODULE['<{easymarketing}prestashop>info_32f12016cce192ce5a98d7e347be08c1'] = 'kostenlose Kampagnenoptimierungen';
+$_MODULE['<{easymarketing}prestashop>info_6a1d11626c63e919c560e26052c26975'] = 'Steigern Sie die Performance Ihrer Marketing-Kampagnen um 38% *';
+$_MODULE['<{easymarketing}prestashop>info_81479e6cf779b6e084e23ab126dad348'] = 'Voll automatisiertes Top-Kampagnen-Management';
+$_MODULE['<{easymarketing}prestashop>info_37df66e384c402ccfea843289f424d90'] = 'Werben Sie effizient';
+$_MODULE['<{easymarketing}prestashop>info_456c78ea95ee83dd51ae432f13c35649'] = ' auf Google!';
+$_MODULE['<{easymarketing}prestashop>info_39e61d57e9209611edd4f884e9e47c11'] = 'Für ';
 $_MODULE['<{easymarketing}prestashop>info_6433f0a69ae010c1676ccbd33fdcaef0'] = 'Jetzt starten';
-$_MODULE['<{easymarketing}prestashop>info_917322acbf6c1b7550fb33b7536551a8'] = 'Ihre Daten werden nicht dauerhaft gespeichert. ';
-$_MODULE['<{easymarketing}prestashop>info_3359bc78d6dfc4c7c5d9343cee1b5f3e'] = 'Keine Verpflichtungen. Keine Kosten.';
-$_MODULE['<{easymarketing}prestashop>info_589f2e1f111180052a8e64b269ab4029'] = 'Ihre ersten Kamganen auf Google?';
-$_MODULE['<{easymarketing}prestashop>info_fb3b3097349ff66488a9bbb7d32a5aaa'] = 'Erste Schritte mit dem \"Starter-Paket\"';
-$_MODULE['<{easymarketing}prestashop>info_7058e1501351287c622dbdadb4858428'] = 'kostenlose Erweiterung Ihres Shops für Google';
-$_MODULE['<{easymarketing}prestashop>info_67607289d68058564399c9fa1b9c64ba'] = 'kostenlose Erstellung & Verwaltung';
-$_MODULE['<{easymarketing}prestashop>info_cedcf6fe65a8f2849fe11e316d6c9923'] = 'Jetzt anmelden';
-$_MODULE['<{easymarketing}prestashop>info_2ca6224b5ddf6a1c43318cb04bf1a6d5'] = 'Empfohlen von';
+$_MODULE['<{easymarketing}prestashop>info_9970f3a0962b3d0b54be2bf9e9d2f5b0'] = 'Keine Kosten. Kein Risiko. Keine Verpflichtungen.';
+$_MODULE['<{easymarketing}prestashop>info_f0829c7ae20b4a89118dcf016d2b4d80'] = 'Ihre Daten werden nicht dauerhaft gespeichert oder an Dritte weitergegeben. Keine Vertragslaufzeit oder Gebühr.';
+$_MODULE['<{easymarketing}prestashop>info_c3892a9f419a3ec47323376e7a3dc86f'] = '*Im Durchschnitt - Benchmark Studie, Juni 2015';
 $_MODULE['<{easymarketing}prestashop>attributes_eff88d54854b0637031f4066736623bc'] = 'Feldname';
 $_MODULE['<{easymarketing}prestashop>attributes_0e010c6b3fb88bf4277c880d1657787a'] = 'Artikelvariante';
 $_MODULE['<{easymarketing}prestashop>attributes_1a07443febb5c38452f24340388dcdf7'] = 'Bitte wählen Sie eine Artikelvatiante';
