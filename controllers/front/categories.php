@@ -70,7 +70,10 @@ class EasymarketingCategoriesModuleFrontController extends ModuleFrontController
                         $children = Category::getChildren($id, $id_lang);
                         if (count($children) > 0) {
                             foreach ($children as $child) {
-                                if ((is_array($selected_cat_ids) && (count($selected_cat_ids) > 0) && in_array($child['id_category'], $selected_cat_ids)) || count($selected_cat_ids) == 0) {
+                                if ((is_array($selected_cat_ids)
+                                        && (count($selected_cat_ids) > 0)
+                                        && in_array($child['id_category'], $selected_cat_ids))
+                                    || count($selected_cat_ids) == 0) {
                                     $response['children'][] = $child['id_category'];
                                 }
                             }

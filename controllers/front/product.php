@@ -40,7 +40,17 @@ class EasymarketingProductModuleFrontController extends ModuleFrontController
         if (Tools::getValue('shop_token') == Configuration::get('EASYMARKETING_SHOP_TOKEN')) {
             if (Tools::getIsset('id') && Validate::isInt(Tools::getValue('id'))) {
 
-                $products = $this->module->getProducts($id_lang, 0, 1, 'id_product', 'ASC', false, true, null, Tools::getValue('id'));
+                $products = $this->module->getProducts(
+                    $id_lang,
+                    0,
+                    1,
+                    'id_product',
+                    'ASC',
+                    false,
+                    true,
+                    null,
+                    Tools::getValue('id')
+                );
                 $currency = $this->module->getCurrency();
                 $shipping_carriers = $this->module->getShippingCarriers($id_lang);
                 if (count($products) == 1) {
