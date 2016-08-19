@@ -2,10 +2,12 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{easymarketing}prestashop>easymarketing_8c88e20b47a8df891e373510cd07d1e0'] = 'Easymarketing - Verkaufsturbo mit Soforteffekt';
 $_MODULE['<{easymarketing}prestashop>easymarketing_876f23178c29dc2552c0b48bf23cd9bd'] = 'Sind Sie sicher, dass Sie das deinstallieren möchten?';
 $_MODULE['<{easymarketing}prestashop>easymarketing_0e6a6be1744f5b97426feb6b90effb84'] = ' Sie müssen cURL Erweiterung in PHP aktivieren.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_e69e2a3bab3657f9dc3b7b9bdd813b1e'] = 'Daten der Google Website-Prüfung sind nicht verfügbar.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_6b4cc75083e2e36ce2e9b1444456ce8c'] = 'Daten der Google Website-Prüfung wurden runter geladen.';
+$_MODULE['<{easymarketing}prestashop>easymarketing_4135b8b63442eefe346d931781659b89'] = 'Verifizierungsdatei kann nicht im Wurzeverzeichnis des Shops geschrieben werden. Bitte überprüfen Sie die Schreibrechte.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_fd558f5daab9290cdc187e128362c0c6'] = 'Prüfungsdatei wurde erfolgreich geschrieben.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_8a6194d12e536a12fd63c170e5c31c9b'] = 'Seiten-Überprüfung kann nicht durchgeführt werden.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_7c1322d21f9d09cb68f3e67db5d52b9e'] = 'Seiten-Überprüfung wurde durchgeführt.';
@@ -15,9 +17,12 @@ $_MODULE['<{easymarketing}prestashop>easymarketing_b5a7adde1af5c87d7fd797b6245c2
 $_MODULE['<{easymarketing}prestashop>easymarketing_36e3402e4ddef43e92b99aef016c057e'] = 'Kurzbeschreibung';
 $_MODULE['<{easymarketing}prestashop>easymarketing_9a51a007b33a46e553def6423aad8648'] = 'Allgemeine Einstellungen';
 $_MODULE['<{easymarketing}prestashop>easymarketing_5bc7ab301074148dc708229c5ad54fc6'] = ' Zugriffstoken';
+$_MODULE['<{easymarketing}prestashop>easymarketing_1ef6815451f0bb6b78a45f87a59d1b24'] = 'Der Benutzer muss es aus seinem EASYMARKETING kopieren+einfügen. Damit hat er Zugriff auf EASYMARKETING Webdienste, wie tägliche Benutzerstatistiken, conversiontracker zum Messen der Verköufe usw.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_ca68c69918abbcbc9bebf10719019873'] = 'Shoptoken';
 $_MODULE['<{easymarketing}prestashop>easymarketing_902b2112f1d4301603c8e86dcac2507e'] = 'Google Website-Überprüfung';
+$_MODULE['<{easymarketing}prestashop>easymarketing_e43f4225f47239ac8831f14193ff8e4c'] = 'Privatsphäre ist Google wichtig, wir müssen Ihre eigene Seite erst kennen, bevor wir bestimmte Informationen zeigen können, die zum Nutzen unserer Tools berechtigen.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_f9ebab145c073518b18f809af90cd3f2'] = 'Tracker-Codes';
+$_MODULE['<{easymarketing}prestashop>easymarketing_39931c9987b6a52ddbc83b75218157b2'] = 'Sie müssen den Tracker Code erhalten (conversion tracker, lead tracker, facebook badge and remarketing) , um ihn in Ihrem Shop einzupflegen';
 $_MODULE['<{easymarketing}prestashop>easymarketing_9b0a12a64ee4de9aa216a1c004c1e897'] = 'Kombinationen exportieren';
 $_MODULE['<{easymarketing}prestashop>easymarketing_ea7a3a6122ebf5ac1416b0af65c4ad31'] = 'Kategorien exportieren';
 $_MODULE['<{easymarketing}prestashop>easymarketing_b6f9ec265ef334c7600b10fe448af27c'] = ' Mapping-Attribute';
@@ -30,6 +35,7 @@ $_MODULE['<{easymarketing}prestashop>easymarketing_3912988b2f9b3a1f6d555f9857a18
 $_MODULE['<{easymarketing}prestashop>easymarketing_66583898f4538ca7680960aa2e67d6ba'] = ' Remarketing-Code wird auf jeder Seite der Website integriert werden';
 $_MODULE['<{easymarketing}prestashop>easymarketing_27478043006540ec77cbf9fa26c359f4'] = 'Facebook Badge aktivieren';
 $_MODULE['<{easymarketing}prestashop>easymarketing_d01511a30a8d702a12a9160927dbd7de'] = ' Like-Button auf der Checkout-Seite des Herstellers';
+$_MODULE['<{easymarketing}prestashop>easymarketing_0b4f765114a8dadfd4dff76501ad9804'] = 'Cron ist ein Job-Scheduler für Unix-basierte Systeme und es ist ein sehr nützliches Werkzeug, mit dem Sie einige Routineaufgaben planen können, die automatisch ausgeführt werden, unabhängig davon, ob Sie oder jemand anderes auf Ihrer Website aktiv ist: solange der Server-Hosting Ihrer Website ausgeführt wird, wird cron seine Aufgabe erledigen. Sie aktivieren cron für dieses Modul, indem Sie Sie die folgende Zeile in Ihre crontab-Datei einfügen.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_bf70ee3136dba5cca718c83060508a7f'] = 'Dieser Cron Job wird die Codes der Tracker jede Nacht um 1:00 Uhr aktualisieren.';
 $_MODULE['<{easymarketing}prestashop>easymarketing_1ae41d8e7b8ba23b1e041cee3008d596'] = 'Es hat dieselbe Wirkung wie das manuelle Drücken der Taste';
 $_MODULE['<{easymarketing}prestashop>easymarketing_96bbe36cda9fe58aed229e737c5ec755'] = 'Download-Tracker-Codes';
