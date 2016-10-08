@@ -31,7 +31,9 @@ class EasymarketingProductsModuleFrontController extends ModuleFrontController
         $message = '===== '.date('Y.m.d h:i:s').' ====='."\r\n";
         $message .= 'Request: '.print_r($_GET, true);
 
-        if (!Tools::getIsset('lang') || (Tools::getIsset('lang') && ($id_lang = Language::getIdByIso(Tools::getValue('lang'))) == false)) {
+        if (!Tools::getIsset('lang')
+            || (Tools::getIsset('lang')
+                && ($id_lang = Language::getIdByIso(Tools::getValue('lang'))) == false)) {
             $id_lang = Configuration::get('PS_LANG_DEFAULT');
         }
 
@@ -43,7 +45,16 @@ class EasymarketingProductsModuleFrontController extends ModuleFrontController
                 $offset = Tools::getValue('offset');
                 $limit = Tools::getValue('limit');
 
-                $products = $this->module->getProducts($id_lang, $offset, $limit, 'id_product', 'ASC', false, true, null);
+                $products = $this->module->getProducts(
+                    $id_lang,
+                    $offset,
+                    $limit,
+                    'id_product',
+                    'ASC',
+                    false,
+                    true,
+                    null
+                );
                 $currency = $this->module->getCurrency();
                 $shipping_carriers = $this->module->getShippingCarriers($id_lang);
 
@@ -54,7 +65,12 @@ class EasymarketingProductsModuleFrontController extends ModuleFrontController
                     );
 
                     foreach ($products as $product) {
-                        $response['products'][] = $this->module->getProductInfo($product, $shipping_carriers, $id_lang, $currency);
+                        $response['products'][] = $this->module->getProductInfo(
+                            $product,
+                            $shipping_carriers,
+                            $id_lang,
+                            $currency
+                        );
                     }
                 }
             }

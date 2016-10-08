@@ -37,8 +37,9 @@ class Easymarketing extends Module
     {
         $this->name = 'easymarketing';
         $this->tab = 'advertising_marketing';
-        $this->version = '0.4.7';
+        $this->version = '0.4.11';
         $this->author = 'easymarketing';
+        $this->module_key = 'cc7d8cbd1dbe4d6a14e33c7a6570289e';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
             'min' => '1.6.0.0',
@@ -221,12 +222,32 @@ class Easymarketing extends Module
             'website_url' => $this->getWebsiteUrl(),
             'access_token' => Configuration::get('EASYMARKETING_ACCESS_TOKEN'),
             'shop_token' => Configuration::get('EASYMARKETING_SHOP_TOKEN'),
-            'categories_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'categories', array()),
+            'categories_api_endpoint' => Context::getContext()->link->getModuleLink(
+                $this->name,
+                'categories',
+                array()
+            ),
             'products_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'products', array()),
-            'product_by_id_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'product', array()),
-            'best_products_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'bestproducts', array()),
-            'new_products_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'newproducts', array()),
-            'shopsystem_info_api_endpoint' => Context::getContext()->link->getModuleLink($this->name, 'shopsysteminfo', array()),
+            'product_by_id_api_endpoint' => Context::getContext()->link->getModuleLink(
+                $this->name,
+                'product',
+                array()
+            ),
+            'best_products_api_endpoint' => Context::getContext()->link->getModuleLink(
+                $this->name,
+                'bestproducts',
+                array()
+            ),
+            'new_products_api_endpoint' => Context::getContext()->link->getModuleLink(
+                $this->name,
+                'newproducts',
+                array()
+            ),
+            'shopsystem_info_api_endpoint' => Context::getContext()->link->getModuleLink(
+                $this->name,
+                'shopsysteminfo',
+                array()
+            ),
             'api_setup_test_single_product_id' => $this->getTestProductId(),
             'shop_category_root_id' => $this->getExportRootCategory(),
         );
@@ -509,7 +530,9 @@ class Easymarketing extends Module
 
     public function putGoogleSiteVerificationDataInFile($data)
     {
-        if (($data->html_file_name != '') && ($data->html_content != '') && pathinfo($data->html_file_name, PATHINFO_EXTENSION) == 'html') {
+        if (($data->html_file_name != '')
+            && ($data->html_content != '')
+            && pathinfo($data->html_file_name, PATHINFO_EXTENSION) == 'html') {
             $path = _PS_ROOT_DIR_.'/'.pathinfo($data->html_file_name, PATHINFO_BASENAME);
             if (!$write_fd = fopen($path, 'w+')) {
                 return false;
@@ -908,7 +931,15 @@ class Easymarketing extends Module
         ) {
 
             foreach ($currentCategoryData['children'] as $child) {
-                self::recurseCategoryForInclude($indexedCategories, $categories, $child, $id_category_default, $has_suite, $content, $done);
+                self::recurseCategoryForInclude(
+                    $indexedCategories,
+                    $categories,
+                    $child,
+                    $id_category_default,
+                    $has_suite,
+                    $content,
+                    $done
+                );
             }
         }
     }
@@ -951,32 +982,27 @@ class Easymarketing extends Module
                         'name' => 'EASYMARKETING_ACCESS_TOKEN',
                         'type' => 'text',
                         'label' => $this->l('Access token'),
-                        'desc' => $this->l('The user needs to copy+paste this from his EASYMARKETING account.
-						This is used to access EASYMARKETING webservices like returning daily user statistics, a
-						conversion tracker to measure sales etc.'),
+                        'desc' => $this->l('The user needs to copy+paste this from his EASYMARKETING account. This is used to access EASYMARKETING webservices like returning daily user statistics, a conversion tracker to measure sales etc.'),
                     ),
                     array(
                         'name' => 'EASYMARKETING_SHOP_TOKEN',
                         'type' => 'text',
                         'label' => $this->l('Shop token'),
-                        'desc' => $this->l('It will be used for authentication for the requests to the
-						 webservice you will implement specified below.'),
+                        'desc' => $this->l('It will be used for authentication for the requests to the webservice you will implement specified below.'),
                     ),
                     array(
                         'type' => 'html',
                         'name' => 'site_verification',
                         'label' => $this->l('Google Site Verification'),
                         'html_content' => $this->displaySiteVerification(),
-                        'desc' => $this->l('Privacy is important to Google, we need to know you own a site
-						before we\'ll show you certain information about it or enable you to use our tools.')
+                        'desc' => $this->l('Privacy is important to Google, we need to know you own a site before we\'ll show you certain information about it or enable you to use our tools.')
                     ),
                     array(
                         'type' => 'html',
                         'name' => 'trackers code',
                         'label' => $this->l('Trackers codes'),
                         'html_content' => $this->displayTrackerCodes(),
-                        'desc' => $this->l('You have to get tracker code (conversion tracker, lead tracker, facebook badge and
-						 remarketing) for placing it on your shop.')
+                        'desc' => $this->l('You have to get tracker code (conversion tracker, lead tracker, facebook badge and remarketing) for placing it on your shop.')
                     ),
                     array(
                         'name' => 'EASYMARKETING_EXPORT_COMBINATIONS',
@@ -1015,8 +1041,9 @@ class Easymarketing extends Module
                         'name' => 'EASYMARKETING_CONVERSION_TRACKER_ENABLED',
                         'type' => 'switch',
                         'label' => $this->l('Enable Google conversion tracker'),
-                        'desc' => $this->l('Conversion Tracker Code will be integrated on the vendor\'s checkout success page.').
-                            ' '.
+                        'desc' => $this->l(
+                            'Conversion Tracker Code will be integrated on the vendor\'s checkout success page.'
+                        ).' '.
                             (isset($conversion_tracker->user_id) ? 'user_id:'.$conversion_tracker->user_id : '').
                             (isset($conversion_tracker->code) ? ' , google code' : '').
                             (isset($conversion_tracker->fb_code) ? ' , fb code' : ''),
@@ -1086,20 +1113,22 @@ class Easymarketing extends Module
                     array(
                         'type' => 'html',
                         'name' => 'cron',
-                        'html_content' => $this->l('Cron is a job scheduler for Unix-based systems and it\'s a very
-						handy tool, as you can schedule some routine tasks to run automatically, no matter if you or
-						anyone else is present on your website: as long as the server hosting your site is running,
-						cron will do it\'s job. To activate cron for this module, add the line below to your crontab file.').
+                        'html_content' => $this->l('Cron is a job scheduler for Unix-based systems and it\'s a very handy tool, as you can schedule some routine tasks to run automatically, no matter if you or anyone else is present on your website: as long as the server hosting your site is running, cron will do it\'s job. To activate cron for this module, add the line below to your crontab file.').
                             '<p>'.$this->l('This cron job will get updates codes of trackers every night at 1:00am.').
                             ' '.$this->l('It has same action as manually pressing button').
                             ' "'.$this->l('Download trackers codes').'".'.
-                            '<p><code>1 * * * * php -f '.dirname(__FILE__).DIRECTORY_SEPARATOR.'cron.php</code>'
+                            '<p><code>1 * * * * php -f '.dirname(__FILE__).DIRECTORY_SEPARATOR.'cron.php token='.
+                                Tools::substr(Tools::encrypt('easymarketing/cron'), 0, 10).'</code>'.
+                            '<p>or use URL: <code>'.Tools::getProtocol(Tools::usingSecureMode()).$_SERVER['HTTP_HOST'].
+                                $this->getPathUri().'cron.php?token='.
+                                Tools::substr(Tools::encrypt('easymarketing/cron'), 0, 10).'</code>'
                     ),
                     array(
                         'name' => 'EASYMARKETING_LOG_ENABLED',
                         'type' => 'switch',
                         'label' => $this->l('Enable Log'),
-                        'desc' => $this->l('Logs of actions in').' '.dirname(__FILE__).DIRECTORY_SEPARATOR.'logs '.$this->l('directory.'),
+                        'desc' => $this->l('Logs of actions in').' '.dirname(__FILE__).DIRECTORY_SEPARATOR.
+                            'logs '.$this->l('directory.'),
                         'is_bool' => true,
                         'disabled' => false,
                         'values' => array(
@@ -1162,15 +1191,24 @@ class Easymarketing extends Module
         // Generelle Einstellungen
         if (Tools::isSubmit('submitSaveOptions')) {
             // Global Settings
-            if (!Configuration::updateValue('EASYMARKETING_ACCESS_TOKEN', Tools::getValue('EASYMARKETING_ACCESS_TOKEN'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_ACCESS_TOKEN',
+                Tools::getValue('EASYMARKETING_ACCESS_TOKEN')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_ACCESS_TOKEN';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_SHOP_TOKEN', Tools::getValue('EASYMARKETING_SHOP_TOKEN'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_SHOP_TOKEN',
+                Tools::getValue('EASYMARKETING_SHOP_TOKEN')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_SHOP_TOKEN';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_EXPORT_COMBINATIONS', (int)Tools::getValue('EASYMARKETING_EXPORT_COMBINATIONS'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_EXPORT_COMBINATIONS',
+                (int)Tools::getValue('EASYMARKETING_EXPORT_COMBINATIONS')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_EXPORT_COMBINATIONS';
             }
 
@@ -1205,32 +1243,53 @@ class Easymarketing extends Module
                 }
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING', Tools::jsonEncode($attr_mapping))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING',
+                Tools::jsonEncode($attr_mapping)
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_EXPORT_ATTRIBUTES_MAPPING';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_PROD_DESCR', Tools::getValue('EASYMARKETING_PROD_DESCR'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_PROD_DESCR',
+                Tools::getValue('EASYMARKETING_PROD_DESCR')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_PROD_DESCR';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_CONVERSION_TRACKER_ENABLED', (int)Tools::getValue('EASYMARKETING_CONVERSION_TRACKER_ENABLED'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_CONVERSION_TRACKER_ENABLED',
+                (int)Tools::getValue('EASYMARKETING_CONVERSION_TRACKER_ENABLED')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_CONVERSION_TRACKER_ENABLED';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_LEAD_TRACKER_ENABLED', (int)Tools::getValue('EASYMARKETING_LEAD_TRACKER_ENABLED'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_LEAD_TRACKER_ENABLED',
+                (int)Tools::getValue('EASYMARKETING_LEAD_TRACKER_ENABLED')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_LEAD_TRACKER_ENABLED';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED', (int)Tools::getValue('EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED',
+                (int)Tools::getValue('EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED';
             }
 
-            if (!Configuration::updateValue('EASYMARKETING_FACEBOOK_BADGE_CODE_ENABLED', (int)Tools::getValue('EASYMARKETING_FACEBOOK_BADGE_CODE_ENABLED'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_FACEBOOK_BADGE_CODE_ENABLED',
+                (int)Tools::getValue('EASYMARKETING_FACEBOOK_BADGE_CODE_ENABLED')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_FACEBOOK_BADGE_CODE_ENABLED';
             }
 
 
-            if (!Configuration::updateValue('EASYMARKETING_LOG_ENABLED', (int)Tools::getValue('EASYMARKETING_LOG_ENABLED'))) {
+            if (!Configuration::updateValue(
+                'EASYMARKETING_LOG_ENABLED',
+                (int)Tools::getValue('EASYMARKETING_LOG_ENABLED')
+            )) {
                 $this->_errors[] = $this->l('Could not update').': EASYMARKETING_LOG_ENABLED';
             }
 
@@ -1273,7 +1332,8 @@ class Easymarketing extends Module
             $address_id = null;
         }
 
-        $cache_id = 'getPackageShippingCost_'.(int)$cart->id.'_'.(int)$address_id.'_'.(int)$id_carrier.'_'.(int)$use_tax.'_'.(int)$default_country->id;
+        $cache_id = 'getPackageShippingCost_'.(int)$cart->id.'_'.(int)$address_id.'_'.(int)$id_carrier.
+            '_'.(int)$use_tax.'_'.(int)$default_country->id;
 
         if ($products) {
             foreach ($products as $product) {
@@ -1299,11 +1359,17 @@ class Easymarketing extends Module
         if (!isset($id_zone)) {
             // Get id zone
             // Be carefull, id_address_delivery is not usefull one 1.5
-            if (!$cart->isMultiAddressDelivery()  && isset($cart->id_address_delivery) && $cart->id_address_delivery && Customer::customerHasAddress($cart->id_customer, $cart->id_address_delivery)) {
+            if (!$cart->isMultiAddressDelivery()
+                && isset($cart->id_address_delivery)
+                && $cart->id_address_delivery
+                && Customer::customerHasAddress($cart->id_customer, $cart->id_address_delivery)) {
                 $id_zone = Address::getZoneById((int)$cart->id_address_delivery);
             } else {
                 if (!Validate::isLoadedObject($default_country)) {
-                    $default_country = new Country(Configuration::get('PS_COUNTRY_DEFAULT'), Configuration::get('PS_LANG_DEFAULT'));
+                    $default_country = new Country(
+                        Configuration::get('PS_COUNTRY_DEFAULT'),
+                        Configuration::get('PS_LANG_DEFAULT')
+                    );
                 }
 
                 $id_zone = (int)$default_country->id_zone;
@@ -1314,16 +1380,27 @@ class Easymarketing extends Module
             $id_carrier = '';
         }
 
-        if (empty($id_carrier) && $cart->isCarrierInRange((int)Configuration::get('PS_CARRIER_DEFAULT'), (int)$id_zone)) {
+        if (empty($id_carrier)
+            && $cart->isCarrierInRange((int)Configuration::get('PS_CARRIER_DEFAULT'), (int)$id_zone)) {
             $id_carrier = (int)Configuration::get('PS_CARRIER_DEFAULT');
         }
 
-        $total_package_without_shipping_tax_inc = $cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING, $product_list);
+        $total_package_without_shipping_tax_inc = $cart->getOrderTotal(
+            true,
+            Cart::BOTH_WITHOUT_SHIPPING,
+            $product_list
+        );
 
         if (empty($id_carrier)) {
             if ((int)$cart->id_customer) {
                 $customer = new Customer((int)$cart->id_customer);
-                $result = Carrier::getCarriers((int)Configuration::get('PS_LANG_DEFAULT'), true, false, (int)$id_zone, $customer->getGroups());
+                $result = Carrier::getCarriers(
+                    (int)Configuration::get('PS_LANG_DEFAULT'),
+                    true,
+                    false,
+                    (int)$id_zone,
+                    $customer->getGroups()
+                );
                 unset($customer);
             } else {
                 $result = Carrier::getCarriers((int)Configuration::get('PS_LANG_DEFAULT'), true, false, (int)$id_zone);
@@ -1341,8 +1418,10 @@ class Easymarketing extends Module
                 $carrier = self::$_carriers[$row['id_carrier']];
 
                 // Get only carriers that are compliant with shipping method
-                if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT && $carrier->getMaxDeliveryPriceByWeight((int)$id_zone) === false)
-                    || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE && $carrier->getMaxDeliveryPriceByPrice((int)$id_zone) === false)
+                if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT
+                        && $carrier->getMaxDeliveryPriceByWeight((int)$id_zone) === false)
+                    || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE
+                        && $carrier->getMaxDeliveryPriceByPrice((int)$id_zone) === false)
                 ) {
                     unset($result[$k]);
                     continue;
@@ -1350,14 +1429,25 @@ class Easymarketing extends Module
 
                 // If out-of-range behavior carrier is set on "Desactivate carrier"
                 if ($row['range_behavior']) {
-                    $check_delivery_price_by_weight = Carrier::checkDeliveryPriceByWeight($row['id_carrier'], $cart->getTotalWeight(), (int)$id_zone);
+                    $check_delivery_price_by_weight = Carrier::checkDeliveryPriceByWeight(
+                        $row['id_carrier'],
+                        $cart->getTotalWeight(),
+                        (int)$id_zone
+                    );
 
                     $total_order = $total_package_without_shipping_tax_inc;
-                    $check_delivery_price_by_price = Carrier::checkDeliveryPriceByPrice($row['id_carrier'], $total_order, (int)$id_zone, (int)$cart->id_currency);
+                    $check_delivery_price_by_price = Carrier::checkDeliveryPriceByPrice(
+                        $row['id_carrier'],
+                        $total_order,
+                        (int)$id_zone,
+                        (int)$cart->id_currency
+                    );
 
                     // Get only carriers that have a range compatible with cart
-                    if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT && !$check_delivery_price_by_weight)
-                        || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE && !$check_delivery_price_by_price)
+                    if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT
+                            && !$check_delivery_price_by_weight)
+                        || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE
+                            && !$check_delivery_price_by_price)
                     ) {
                         unset($result[$k]);
                         continue;
@@ -1365,9 +1455,16 @@ class Easymarketing extends Module
                 }
 
                 if ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT) {
-                    $shipping = $carrier->getDeliveryPriceByWeight($cart->getTotalWeight($product_list), (int)$id_zone);
+                    $shipping = $carrier->getDeliveryPriceByWeight(
+                        $cart->getTotalWeight($product_list),
+                        (int)$id_zone
+                    );
                 } else {
-                    $shipping = $carrier->getDeliveryPriceByPrice($order_total, (int)$id_zone, (int)$cart->id_currency);
+                    $shipping = $carrier->getDeliveryPriceByPrice(
+                        $order_total,
+                        (int)$id_zone,
+                        (int)$cart->id_currency
+                    );
                 }
 
                 //if (!isset($min_shipping_price))
@@ -1420,7 +1517,10 @@ class Easymarketing extends Module
         // Free fees
         $free_fees_price = 0;
         if (isset($configuration['PS_SHIPPING_FREE_PRICE'])) {
-            $free_fees_price = Tools::convertPrice((float)$configuration['PS_SHIPPING_FREE_PRICE'], Currency::getCurrencyInstance((int)$cart->id_currency));
+            $free_fees_price = Tools::convertPrice(
+                (float)$configuration['PS_SHIPPING_FREE_PRICE'],
+                Currency::getCurrencyInstance((int)$cart->id_currency)
+            );
         }
         $orderTotalwithDiscounts = $cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING, null, null, false);
         if ($orderTotalwithDiscounts >= (float)($free_fees_price) && (float)($free_fees_price) > 0) {
@@ -1450,16 +1550,30 @@ class Easymarketing extends Module
                 }
             }
 
-            if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT && !Carrier::checkDeliveryPriceByWeight($carrier->id, $cart->getTotalWeight(), (int)$id_zone))
-                || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE && !Carrier::checkDeliveryPriceByPrice($carrier->id, $total_package_without_shipping_tax_inc, $id_zone, (int)$cart->id_currency)
+            if (($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT
+                && !Carrier::checkDeliveryPriceByWeight($carrier->id, $cart->getTotalWeight(), (int)$id_zone))
+                || ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_PRICE
+                    && !Carrier::checkDeliveryPriceByPrice(
+                        $carrier->id,
+                        $total_package_without_shipping_tax_inc,
+                        $id_zone,
+                        (int)$cart->id_currency
+                    )
                 )
             ) {
                 $shipping_cost += 0;
             } else {
                 if ($carrier->getShippingMethod() == Carrier::SHIPPING_METHOD_WEIGHT) {
-                    $shipping_cost += $carrier->getDeliveryPriceByWeight($cart->getTotalWeight($product_list), $id_zone);
+                    $shipping_cost += $carrier->getDeliveryPriceByWeight(
+                        $cart->getTotalWeight($product_list),
+                        $id_zone
+                    );
                 } else {
-                    $shipping_cost += $carrier->getDeliveryPriceByPrice($order_total, $id_zone, (int)$cart->id_currency);
+                    $shipping_cost += $carrier->getDeliveryPriceByPrice(
+                        $order_total,
+                        $id_zone,
+                        (int)$cart->id_currency
+                    );
                 }
             }
         } else {
@@ -1646,7 +1760,11 @@ class Easymarketing extends Module
                 $total_price = $price * (int)$product['cart_quantity'];
 
                 if ($with_taxes) {
-                    $product_tax_rate = (float)Tax::getProductTaxRate((int)$product['id_product'], (int)$address_id, $virtual_context);
+                    $product_tax_rate = (float)Tax::getProductTaxRate(
+                        (int)$product['id_product'],
+                        (int)$address_id,
+                        $virtual_context
+                    );
                     $product_eco_tax_rate = Tax::getProductEcotaxRate((int)$address_id);
 
                     $total_price = ($total_price - $total_ecotax) * (1 + $product_tax_rate / 100);
@@ -1708,7 +1826,10 @@ class Easymarketing extends Module
         // Wrapping Fees
         $wrapping_fees = 0;
         if ($cart->gift) {
-            $wrapping_fees = Tools::convertPrice(Tools::ps_round($cart->getGiftWrappingPrice($with_taxes), 2), Currency::getCurrencyInstance((int)$this->id_currency));
+            $wrapping_fees = Tools::convertPrice(
+                Tools::ps_round($cart->getGiftWrappingPrice($with_taxes), 2),
+                Currency::getCurrencyInstance((int)$this->id_currency)
+            );
         }
         if ($type == Cart::ONLY_WRAPPING) {
             return $wrapping_fees;
@@ -1737,15 +1858,27 @@ class Easymarketing extends Module
 
             $id_address_delivery = 0;
             if (isset($products[0])) {
-                $id_address_delivery = (is_null($products) ? $cart->id_address_delivery : $products[0]['id_address_delivery']);
+                $id_address_delivery = (is_null($products)
+                    ? $cart->id_address_delivery
+                    : $products[0]['id_address_delivery']);
             }
-            $package = array('id_carrier' => $id_carrier, 'id_address' => $id_address_delivery, 'products' => $products);
+            $package = array(
+                'id_carrier' => $id_carrier,
+                'id_address' => $id_address_delivery,
+                'products' => $products
+            );
 
             // Then, calculate the contextual value for each one
             foreach ($cart_rules as $cart_rule) {
                 // If the cart rule offers free shipping, add the shipping cost
                 if (($with_shipping || $type == Cart::ONLY_DISCOUNTS) && $cart_rule['obj']->free_shipping) {
-                    $order_total_discount += Tools::ps_round($cart_rule['obj']->getContextualValue($with_taxes, $virtual_context, CartRule::FILTER_ACTION_SHIPPING, ($param_product ? $package : null), $use_cache), 2);
+                    $order_total_discount += Tools::ps_round($cart_rule['obj']->getContextualValue(
+                        $with_taxes,
+                        $virtual_context,
+                        CartRule::FILTER_ACTION_SHIPPING,
+                        ($param_product ? $package : null),
+                        $use_cache
+                    ), 2);
                 }
 
                 // If the cart rule is a free gift, then add the free gift value only if the gift is in this package
@@ -1755,20 +1888,33 @@ class Easymarketing extends Module
                         $in_order = true;
                     } else {
                         foreach ($products as $product) {
-                            if ($cart_rule['obj']->gift_product == $product['id_product'] && $cart_rule['obj']->gift_product_attribute == $product['id_product_attribute']) {
+                            if ($cart_rule['obj']->gift_product == $product['id_product']
+                                && $cart_rule['obj']->gift_product_attribute == $product['id_product_attribute']) {
                                 $in_order = true;
                             }
                         }
                     }
 
                     if ($in_order) {
-                        $order_total_discount += $cart_rule['obj']->getContextualValue($with_taxes, $virtual_context, CartRule::FILTER_ACTION_GIFT, $package, $use_cache);
+                        $order_total_discount += $cart_rule['obj']->getContextualValue(
+                            $with_taxes,
+                            $virtual_context,
+                            CartRule::FILTER_ACTION_GIFT,
+                            $package,
+                            $use_cache
+                        );
                     }
                 }
 
                 // If the cart rule offers a reduction, the amount is prorated (with the products in the package)
                 if ($cart_rule['obj']->reduction_percent > 0 || $cart_rule['obj']->reduction_amount > 0) {
-                    $order_total_discount += Tools::ps_round($cart_rule['obj']->getContextualValue($with_taxes, $virtual_context, CartRule::FILTER_ACTION_REDUCTION, $package, $use_cache), 2);
+                    $order_total_discount += Tools::ps_round($cart_rule['obj']->getContextualValue(
+                        $with_taxes,
+                        $virtual_context,
+                        CartRule::FILTER_ACTION_REDUCTION,
+                        $package,
+                        $use_cache
+                    ), 2);
                 }
             }
             $order_total_discount = min(Tools::ps_round($order_total_discount, 2), $wrapping_fees + $order_total_products + $shipping_fees);
@@ -1884,10 +2030,25 @@ class Easymarketing extends Module
         $sql->from('product', 'p');
 
         // Build JOIN
-        $sql->innerJoin('product_shop', 'product_shop', 'product_shop.`id_product` = p.`id_product` AND product_shop.id_shop='.(int)$context->shop->id);
-        $sql->leftJoin('product_lang', 'pl', 'p.`id_product` = pl.`id_product` AND pl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('pl', 'product_shop.id_shop'));
+        $sql->innerJoin(
+            'product_shop',
+            'product_shop',
+            'product_shop.`id_product` = p.`id_product` AND product_shop.id_shop='.
+            (int)$context->shop->id
+        );
+        $sql->leftJoin(
+            'product_lang',
+            'pl',
+            'p.`id_product` = pl.`id_product` AND pl.`id_lang` = '.
+            (int)$id_lang.Shop::addSqlRestrictionOnLang('pl', 'product_shop.id_shop')
+        );
 
-        $sql->leftJoin('category_lang', 'cl', 'product_shop.`id_category_default` = cl.`id_category` AND cl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('cl', 'product_shop.id_shop'));
+        $sql->leftJoin(
+            'category_lang',
+            'cl',
+            'product_shop.`id_category_default` = cl.`id_category` AND cl.`id_lang` = '.
+            (int)$id_lang.Shop::addSqlRestrictionOnLang('cl', 'product_shop.id_shop')
+        );
 
         $sql->leftJoin('specific_price', 'sp', 'sp.`id_product` = p.`id_product`'); // AND 'sp.`id_shop` = cp.`id_shop`
 
@@ -1919,7 +2080,10 @@ class Easymarketing extends Module
 
         if (Combination::isFeatureActive()) {
             // exclude products which have combinations
-            $sql->where('p.`id_product` NOT IN (SELECT pta.id_product FROM '._DB_PREFIX_.'product_attribute pta WHERE pta.id_product=p.`id_product`)');
+            $sql->where(
+                'p.`id_product` NOT IN (SELECT pta.id_product FROM '._DB_PREFIX_.
+                'product_attribute pta WHERE pta.id_product=p.`id_product`)'
+            );
         }
 
         if ($newer_than) {
@@ -1934,7 +2098,8 @@ class Easymarketing extends Module
         $sql->groupBy('unique_id');
 
         // Build ORDER BY
-        $sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
+        //$sql->orderBy((isset($order_by_prefix)
+        //    ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
 
         //if ($limit) {
         //$sql->limit((int)$limit, (int)$start);
@@ -1975,10 +2140,25 @@ class Easymarketing extends Module
             $sql->from('product', 'p');
 
             // Build JOIN
-            $sql->innerJoin('product_shop', 'product_shop', 'product_shop.`id_product` = p.`id_product` AND product_shop.id_shop='.(int)$context->shop->id);
-            $sql->leftJoin('product_lang', 'pl', 'p.`id_product` = pl.`id_product` AND pl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('pl', 'product_shop.id_shop'));
+            $sql->innerJoin(
+                'product_shop',
+                'product_shop',
+                'product_shop.`id_product` = p.`id_product` AND product_shop.id_shop='.
+                (int)$context->shop->id
+            );
+            $sql->leftJoin(
+                'product_lang',
+                'pl',
+                'p.`id_product` = pl.`id_product` AND pl.`id_lang` = '.
+                (int)$id_lang.Shop::addSqlRestrictionOnLang('pl', 'product_shop.id_shop')
+            );
 
-            $sql->leftJoin('category_lang', 'cl', 'product_shop.`id_category_default` = cl.`id_category` AND cl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('cl', 'product_shop.id_shop'));
+            $sql->leftJoin(
+                'category_lang',
+                'cl',
+                'product_shop.`id_category_default` = cl.`id_category` AND cl.`id_lang` = '.
+                (int)$id_lang.Shop::addSqlRestrictionOnLang('cl', 'product_shop.id_shop')
+            );
 
             $sql->leftJoin('specific_price', 'sp', 'sp.`id_product` = p.`id_product`'); // AND 'sp.`id_shop` = cp.`id_shop`
 
@@ -1991,7 +2171,10 @@ class Easymarketing extends Module
 
             // Build WHERE clauses
             if ($unique_id) {
-                $sql->where('CONCAT(1, LPAD(p.`id_product`, 7, 0), LPAD(IFNULL(pa.`id_product_attribute`, 0), 7, 0)) = \''.(int)$unique_id.'\'');
+                $sql->where(
+                    'CONCAT(1, LPAD(p.`id_product`, 7, 0), LPAD(IFNULL(pa.`id_product_attribute`, 0), 7, 0)) = \''.
+                    (int)$unique_id.'\''
+                );
             }
 
             $sql->where('p.`id_product` IS NOT NULL');
@@ -2020,7 +2203,7 @@ class Easymarketing extends Module
             $sql->groupBy('unique_id');
 
             // Build ORDER BY
-            $sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
+            //$sql->orderBy((isset($order_by_prefix) ? pSQL($order_by_prefix).'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way));
 
             //if ($limit) {
             //$sql->limit((int)$limit, (int)$start);
@@ -2050,7 +2233,8 @@ class Easymarketing extends Module
 
 
         if ($sql_combinations != '') {
-            $sql_general = '('.$sql_products.') UNION ('.$sql_combinations.') ORDER BY unique_id LIMIT '.(int)$start.','.(int)$limit;
+            $sql_general = '('.$sql_products.') UNION ('.$sql_combinations.') ORDER BY unique_id LIMIT '.
+                (int)$start.','.(int)$limit;
         } else {
             $sql_general = $sql_products.' ORDER BY unique_id LIMIT '.(int)$start.','.(int)$limit;
         }
@@ -2061,7 +2245,7 @@ class Easymarketing extends Module
         // add attributes  to name
         foreach ($rproducts as $k => $product) {
             if ($product['id_product_attribute'] > 0) {
-                $sql = 'SELECT ag.`id_attribute_group`, agl.`name` AS group_name, al.`name`  AS attribute_name  ,
+                $sql = 'SELECT ag.`id_attribute_group`, agl.`name` AS group_name, al.`name` AS attribute_name ,
 		                a.`id_attribute` FROM `'._DB_PREFIX_.'product_attribute` pa
 			            LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
 			            ON  pac.`id_product_attribute` = pa.`id_product_attribute`
@@ -2072,9 +2256,16 @@ class Easymarketing extends Module
 						LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al
 						ON  a.`id_attribute` = al.`id_attribute`
 						LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
-						ON  ag.`id_attribute_group` = agl.`id_attribute_group`
-						'.self::addShopSqlAssociation('product_attribute', 'pa', true, null, false, $this->context->shop->id).'
-						WHERE al.`id_lang`='.(int)($id_lang).'
+						ON  ag.`id_attribute_group` = agl.`id_attribute_group`'.
+                        self::addShopSqlAssociation(
+                            'product_attribute',
+                            'pa',
+                            true,
+                            null,
+                            false,
+                            $this->context->shop->id
+                        ).
+                        'WHERE al.`id_lang`='.(int)($id_lang).'
 						AND  agl.`id_lang`='.(int)($id_lang).'
 						AND  pa.`id_product_attribute` = '.(int)($product['id_product_attribute']).'
 						ORDER BY ag.`id_attribute_group` ASC';
@@ -2187,7 +2378,18 @@ class Easymarketing extends Module
 
     public function getNewProductsIds($id_lang, $limit, $newer_than)
     {
-        $products = self::getProducts($id_lang, 0, $limit, 'p.date_upd', 'DESC', false, true, null, false, $newer_than);
+        $products = self::getProducts(
+            $id_lang,
+            0,
+            $limit,
+            'p.date_upd',
+            'DESC',
+            false,
+            true,
+            null,
+            false,
+            $newer_than
+        );
         $productIds = array();
         foreach ($products as $product) {
             $productIds[] = $product['unique_id'];
@@ -2274,7 +2476,13 @@ class Easymarketing extends Module
                 )
             );
 
-            $shipping_price = $this->getPackageShippingCost($cart, $shipping_carrier['id_carrier'], true, new Country($shipping_carrier['id_country']), $product_list);
+            $shipping_price = $this->getPackageShippingCost(
+                $cart,
+                $shipping_carrier['id_carrier'],
+                true,
+                new Country($shipping_carrier['id_country']),
+                $product_list
+            );
 
             $shipping[] = array(
                 'country' => $shipping_carrier['country'],
@@ -2293,12 +2501,34 @@ class Easymarketing extends Module
             'name' => $product['name'],
             'categories' => Product::getProductCategories($product['id_product']),
             'condition' => $product['condition'],
-            'availability' => (Product::getQuantity($product['id_product'], $product['id_product_attribute'], null) > 0) ? 'in stock' :
+            'availability' => (Product::getQuantity(
+                $product['id_product'],
+                $product['id_product_attribute'],
+                null
+            ) > 0) ? 'in stock' :
                 (Product::isAvailableWhenOutOfStock($product['out_of_stock']) ? 'out of stock' : 'preorder'),
-            'price' => (float)Product::getPriceStatic($product['id_product'], true, $product['id_product_attribute'], 2, null, false, false),
+            'price' => (float)Product::getPriceStatic(
+                $product['id_product'],
+                true,
+                $product['id_product_attribute'],
+                2,
+                null,
+                false,
+                false
+            ),
             'currency' => $currency->iso_code,
-            'url' => $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang),
-            'image_url' => $this->context->link->getImageLink($product['link_rewrite'], $product['id_product'].'-'.$cover['id_image'], null),
+            'url' => $this->context->link->getProductLink(
+                $product['id_product'],
+                null,
+                null,
+                null,
+                $id_lang
+            ),
+            'image_url' => $this->context->link->getImageLink(
+                $product['link_rewrite'],
+                $product['id_product'].'-'.$cover['id_image'],
+                null
+            ),
             'shipping' => $shipping,
             'description' => strip_tags($product[$description_field_name]),
             'gtin' => ($product['ean13'] != '') ? $product['ean13'] : $product['upc'],
@@ -2323,9 +2553,21 @@ class Easymarketing extends Module
              * the product id of the parent's product should be used.
              */
             $prod['parent_id'] = $this->createUniqueId($product['id_product'], 0);
-            $prod['url'] = $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang, null, $product['id_product_attribute']);
+            $prod['url'] = $this->context->link->getProductLink(
+                $product['id_product'],
+                null,
+                null,
+                null,
+                $id_lang,
+                null,
+                $product['id_product_attribute']
+            );
             if (isset($product['pai_id_image']) && $product['pai_id_image'] > 0) {
-                $prod['image_url'] = $this->context->link->getImageLink($product['link_rewrite'], $product['id_product'].'-'.$product['pai_id_image'], null);
+                $prod['image_url'] = $this->context->link->getImageLink(
+                    $product['link_rewrite'],
+                    $product['id_product'].'-'.$product['pai_id_image'],
+                    null
+                );
             }
 
             //additional fields for attributes
@@ -2433,9 +2675,17 @@ class Easymarketing extends Module
 
             $tmp = '';
             if (isset($conversion_tracker->code)) {
-                $tmp .= preg_replace('/(google_conversion_value\s=\s.+;)/i', 'google_conversion_value = '.$params['total_to_pay'].';', $conversion_tracker->code)."\r\n";
+                $tmp .= preg_replace(
+                    '/(google_conversion_value\s=\s.+;)/i',
+                    'google_conversion_value = '.$params['total_to_pay'].';',
+                    $conversion_tracker->code
+                )."\r\n";
 
-                $return .= preg_replace('/(value=.+?&)/i', 'value='.$params['total_to_pay'].'&', $tmp)."\r\n";
+                $return .= preg_replace(
+                    '/(value=.+?&)/i',
+                    'value='.$params['total_to_pay'].'&',
+                    $tmp
+                )."\r\n";
             }
 
             if (isset($conversion_tracker->fb_code)) {
@@ -2471,9 +2721,17 @@ class Easymarketing extends Module
                     $lead_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_LEAD_TRACKER')));
                     if (isset($lead_tracker->code)) {
                         $return .= '<!-- google_lead_tracker -->';
-                        $tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i', 'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+                        $tmp = preg_replace(
+                            '/(google_conversion_value\s=\s.+;)/i',
+                            'google_conversion_value = '.$this->context->cart->getOrderTotal().';',
+                            $lead_tracker->code
+                        )."\r\n";
 
-                        $return .= preg_replace('/(value=.+?&)/i', 'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
+                        $return .= preg_replace(
+                            '/(value=.+?&)/i',
+                            'value='.$this->context->cart->getOrderTotal().'&',
+                            $tmp
+                        )."\r\n";
                     }
                     if (isset($lead_tracker->fb_code)) {
                         $return .= '<!-- fb_lead_tracker -->';
@@ -2490,9 +2748,17 @@ class Easymarketing extends Module
                 $lead_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_LEAD_TRACKER')));
                 if (isset($lead_tracker->code)) {
                     $return .= '<!-- google_lead_tracker -->';
-                    $tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i', 'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+                    $tmp = preg_replace(
+                        '/(google_conversion_value\s=\s.+;)/i',
+                        'google_conversion_value = '.$this->context->cart->getOrderTotal().';',
+                        $lead_tracker->code
+                    )."\r\n";
 
-                    $return .= preg_replace('/(value=.+?&)/i', 'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
+                    $return .= preg_replace(
+                        '/(value=.+?&)/i',
+                        'value='.$this->context->cart->getOrderTotal().'&',
+                        $tmp
+                    )."\r\n";
                 }
                 if (isset($lead_tracker->fb_code)) {
                     $return .= '<!-- fb_lead_tracker -->';
@@ -2508,9 +2774,17 @@ class Easymarketing extends Module
                 $lead_tracker = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_LEAD_TRACKER')));
                 if (isset($lead_tracker->code)) {
                     $return .= '<!-- google_lead_tracker -->';
-                    $tmp = preg_replace('/(google_conversion_value\s=\s.+;)/i', 'google_conversion_value = '.$this->context->cart->getOrderTotal().';', $lead_tracker->code)."\r\n";
+                    $tmp = preg_replace(
+                        '/(google_conversion_value\s=\s.+;)/i',
+                        'google_conversion_value = '.$this->context->cart->getOrderTotal().';',
+                        $lead_tracker->code
+                    )."\r\n";
 
-                    $return .= preg_replace('/(value=.+?&)/i', 'value='.$this->context->cart->getOrderTotal().'&', $tmp)."\r\n";
+                    $return .= preg_replace(
+                        '/(value=.+?&)/i',
+                        'value='.$this->context->cart->getOrderTotal().'&',
+                        $tmp
+                    )."\r\n";
                 }
                 if (isset($lead_tracker->fb_code)) {
                     $return .= '<!-- fb_lead_tracker -->';
@@ -2521,14 +2795,16 @@ class Easymarketing extends Module
         }
 
         if (Configuration::get('EASYMARKETING_GOOGLE_REMARKETING_CODE_ENABLED')) {
-            $remarketing_code = Tools::jsonDecode(urldecode(Configuration::get('EASYMARKETING_GOOGLE_REMARKETING_CODE')));
+            $remarketing_code = Tools::jsonDecode(
+                urldecode(Configuration::get('EASYMARKETING_GOOGLE_REMARKETING_CODE'))
+            );
             if (isset($remarketing_code->code)) {
                 //echo '<pre>Page: '.print_r($this->context->controller->php_self, true).'</pre>';
                 //echo '<pre>Code: '.print_r($remarketing_code->code, true).'</pre>';
 
                 $ecomm_pagetype = 'other';
                 $ecomm_prodid = '\'\'';
-                $ecomm_totalvalue = '\'\'';
+                $ecomm_totalvalue = '0';//'\'\'';
                 $ecomm_others = array();
 
                 if ($this->context->customer->logged) {
@@ -2566,22 +2842,43 @@ class Easymarketing extends Module
                         break;
                     case 'product':
                         if ($id_product = (int)Tools::getValue('id_product')) {
-                            $productObj = new Product($id_product, true, $this->context->language->id, $this->context->shop->id);
+                            $productObj = new Product(
+                                $id_product,
+                                true,
+                                $this->context->language->id,
+                                $this->context->shop->id
+                            );
                         }
 
                         if (Validate::isLoadedObject($productObj)) {
                             $id_product_attribute = (int)Product::getDefaultAttribute($id_product);
                             $ecomm_pagetype = 'product';
                             $ecomm_prodid = '\''.$this->createUniqueId($id_product, $id_product_attribute).'\'';
-                            $ecomm_totalvalue = '\''.Product::getPriceStatic((int)$id_product, false, $id_product_attribute, 2).'\'';
+                            /*$ecomm_totalvalue = '\''.Product::getPriceStatic(
+                                (int)$id_product,
+                                false,
+                                $id_product_attribute,
+                                2
+                            ).'\'';*/
+                            $ecomm_totalvalue = Product::getPriceStatic(
+                                (int)$id_product,
+                                false,
+                                $id_product_attribute,
+                                2
+                            );
 
                             // get recomended products
                             $ecomm_rec_prodid = array();
                             $accessories = Product::getAccessoriesLight($this->context->language->id, $id_product);
                             if (is_array($accessories)) {
                                 foreach ($accessories as $accessory) {
-                                    $id_product_attribute_default = (int)Product::getDefaultAttribute($accessory['id_product']);
-                                    $ecomm_rec_prodid[] = '\''.$this->createUniqueId($accessory['id_product'], $id_product_attribute_default).'\'';
+                                    $id_product_attribute_default = (int)Product::getDefaultAttribute(
+                                        $accessory['id_product']
+                                    );
+                                    $ecomm_rec_prodid[] = '\''.$this->createUniqueId(
+                                        $accessory['id_product'],
+                                        $id_product_attribute_default
+                                    ).'\'';
                                 }
                             }
                             if (count($ecomm_rec_prodid) > 0) {
@@ -2590,7 +2887,7 @@ class Easymarketing extends Module
                         } else {
                             $ecomm_pagetype = 'product';
                             $ecomm_prodid = '\'\'';
-                            $ecomm_totalvalue = '\'\'';
+                            $ecomm_totalvalue = '0'; //'\'\'';
                         }
                         break;
                     case 'order':
@@ -2603,12 +2900,15 @@ class Easymarketing extends Module
                             $prod_qty = array();
                             $total = 0;
                             foreach ($products as $product) {
-                                $prod_ids[] = '\''.$this->createUniqueId($product['id_product'], $product['id_product_attribute']).'\'';
+                                $prod_ids[] = '\''.$this->createUniqueId(
+                                    $product['id_product'],
+                                    $product['id_product_attribute']
+                                ).'\'';
                                 $prod_qty[] = '\''.$product['quantity'].'\'';
                                 $total += $product['total'];
                             }
                             $ecomm_prodid = '['.implode(', ', $prod_ids).']';
-                            $ecomm_totalvalue = '\''.$total.'\'';
+                            $ecomm_totalvalue = $total; //'\''.$total.'\'';
 
                             if (count($prod_qty) > 0) {
                                 $ecomm_others[] = 'ecomm_quantity: ['.implode(', ', $prod_qty).'],';
@@ -2628,22 +2928,30 @@ class Easymarketing extends Module
                             $prod_qty = array();
                             $total = 0;
                             foreach ($products as $product) {
-                                $prod_ids[] = '\''.$this->createUniqueId($product['product_id'], $product['product_attribute_id']).'\'';
+                                $prod_ids[] = '\''.$this->createUniqueId(
+                                    $product['product_id'],
+                                    $product['product_attribute_id']
+                                ).'\'';
                                 $prod_qty[] = '\''.$product['quantity'].'\'';
                                 $total += $product['total_price_tax_excl'];
                             }
                             $ecomm_prodid = '['.implode(', ', $prod_ids).']';
-                            $ecomm_totalvalue = '\''.$total.'\'';
+                            $ecomm_totalvalue = $total; //'\''.$total.'\'';
                             if (count($prod_qty) > 0) {
                                 $ecomm_others[] = 'ecomm_quantity: ['.implode(', ', $prod_qty).'],';
                             }
                         }
                         break;
                 }
-                $code = '<script type="text/javascript">var google_tag_params = {'.'ecomm_prodid: '.$ecomm_prodid.', ecomm_pagetype: \''.$ecomm_pagetype.'\', ecomm_totalvalue: '.$ecomm_totalvalue.', '.
+                $code = '<script type="text/javascript">var google_tag_params = {'.'ecomm_prodid: '.$ecomm_prodid.
+                    ', ecomm_pagetype: \''.$ecomm_pagetype.'\', ecomm_totalvalue: '.$ecomm_totalvalue.', '.
                     implode("\n", $ecomm_others).'}; </script>';
 
-                $remarketing_code->code = preg_replace('/(var google_tag_params\s\=\s\{.+\};)/s', '', $remarketing_code->code);
+                $remarketing_code->code = preg_replace(
+                    '/(var google_tag_params\s\=\s\{.+\};)/s',
+                    '',
+                    $remarketing_code->code
+                );
                 $return .= $code."\n".$remarketing_code->code;
             }
         }
