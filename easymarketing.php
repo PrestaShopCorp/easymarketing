@@ -37,7 +37,7 @@ class Easymarketing extends Module
     {
         $this->name = 'easymarketing';
         $this->tab = 'advertising_marketing';
-        $this->version = '0.4.10';
+        $this->version = '0.4.11';
         $this->author = 'easymarketing';
         $this->module_key = 'cc7d8cbd1dbe4d6a14e33c7a6570289e';
         $this->need_instance = 0;
@@ -2804,7 +2804,7 @@ class Easymarketing extends Module
 
                 $ecomm_pagetype = 'other';
                 $ecomm_prodid = '\'\'';
-                $ecomm_totalvalue = '\'\'';
+                $ecomm_totalvalue = '0';//'\'\'';
                 $ecomm_others = array();
 
                 if ($this->context->customer->logged) {
@@ -2854,12 +2854,18 @@ class Easymarketing extends Module
                             $id_product_attribute = (int)Product::getDefaultAttribute($id_product);
                             $ecomm_pagetype = 'product';
                             $ecomm_prodid = '\''.$this->createUniqueId($id_product, $id_product_attribute).'\'';
-                            $ecomm_totalvalue = '\''.Product::getPriceStatic(
+                            /*$ecomm_totalvalue = '\''.Product::getPriceStatic(
                                 (int)$id_product,
                                 false,
                                 $id_product_attribute,
                                 2
-                            ).'\'';
+                            ).'\'';*/
+                            $ecomm_totalvalue = Product::getPriceStatic(
+                                (int)$id_product,
+                                false,
+                                $id_product_attribute,
+                                2
+                            );
 
                             // get recomended products
                             $ecomm_rec_prodid = array();
@@ -2881,7 +2887,7 @@ class Easymarketing extends Module
                         } else {
                             $ecomm_pagetype = 'product';
                             $ecomm_prodid = '\'\'';
-                            $ecomm_totalvalue = '\'\'';
+                            $ecomm_totalvalue = '0'; //'\'\'';
                         }
                         break;
                     case 'order':
@@ -2902,7 +2908,7 @@ class Easymarketing extends Module
                                 $total += $product['total'];
                             }
                             $ecomm_prodid = '['.implode(', ', $prod_ids).']';
-                            $ecomm_totalvalue = '\''.$total.'\'';
+                            $ecomm_totalvalue = $total; //'\''.$total.'\'';
 
                             if (count($prod_qty) > 0) {
                                 $ecomm_others[] = 'ecomm_quantity: ['.implode(', ', $prod_qty).'],';
@@ -2930,7 +2936,7 @@ class Easymarketing extends Module
                                 $total += $product['total_price_tax_excl'];
                             }
                             $ecomm_prodid = '['.implode(', ', $prod_ids).']';
-                            $ecomm_totalvalue = '\''.$total.'\'';
+                            $ecomm_totalvalue = $total; //'\''.$total.'\'';
                             if (count($prod_qty) > 0) {
                                 $ecomm_others[] = 'ecomm_quantity: ['.implode(', ', $prod_qty).'],';
                             }
